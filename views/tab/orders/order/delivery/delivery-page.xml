@@ -1,0 +1,11 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<Label text="Integral: Receba seu pedido em uma única remessa" class="t-14 m-x-15 m-t-20" textWrap="true" />
+		<StackLayout class="hr m-10"></StackLayout>
+		<Label text="Parcial: Receba seu pedido em múltiplas remessas conforme o estoque" class="t-14 m-x-15" textWrap="true" />
+		<FlexboxLayout flexDirection="column" class="p-y-10" flexGrow="1">
+			<Button text="INTEGRAL" class="-outline t-36 -rounded-sm"  tap="{{ gotoOrder }}" flexGrow="1" />
+			<Button text="PARCIAL" class="-outline t-36 -rounded-sm"  tap="{{ gotoHistoric }}" flexGrow="1" />
+		</FlexboxLayout>
+	</FlexboxLayout>
+</Page>

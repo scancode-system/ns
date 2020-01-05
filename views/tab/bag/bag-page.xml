@@ -1,0 +1,34 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<ListView items="{{ items }}" separatorColor="transparent" flexGrow="1" itemTap="{{ onItemTapItem }}">
+			<ListView.itemTemplate>
+				<StackLayout class="p-0">
+					<StackLayout orientation="horizontal" class="p-0 p-t-10">
+						<StackLayout class="m-x-10 p-0">
+							<Image src="https://placem.at/people?w=250" class="w-40 img-rounded" />
+							<Label text="{{ item_product.sku }}" class="p-0 m-0 m-y-5 text-center" />
+						</StackLayout>
+						<StackLayout class="p-0 p-r-15">
+							<Label text="{{ item_product.description }}"  class="t-16 p-0 p-b-5 text-center w-100" />
+							<StackLayout orientation="horizontal" class="p-0">
+								<Label text="Preço Bruto:" class="p-0 w-50" />
+								<Label text="{{ price  | concurrency }}" class="p-0 w-50"/>
+							</StackLayout>
+							<StackLayout orientation="horizontal" class="p-0">
+								<Label text="Quantidade:" class="p-0 w-50" />
+								<Label text="{{ qty }}" class="p-0 w-50" />
+							</StackLayout>
+						</StackLayout >
+					</StackLayout>
+					<FlexboxLayout class="bg-info p-x-5">
+						<Label text="Sub-total: " class="t-14 p-r-0" />
+						<Label text="{{ total  | concurrency }}" class="t-12 p-l-0" />
+					</FlexboxLayout>
+				</StackLayout>
+			</ListView.itemTemplate>
+		</ListView>
+		<StackLayout flexShrink="0" class="bg-light border-top">
+			<Button text="{{ '0xe90f' | getIcon }}" class="icon -primary"  dock="bottom" flexShrink="0"/>
+		</StackLayout>
+	</FlexboxLayout>
+</Page>

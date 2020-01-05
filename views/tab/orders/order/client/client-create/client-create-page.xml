@@ -1,0 +1,67 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<ScrollView flexGrow="1">
+			<StackLayout class="p-x-15 p-y-10">
+				<Label text="Novo Cliente" class="h1" />
+
+				<Label text="Dados" class="h3" />
+				<StackLayout class="nt-input">
+					<TextField hint="CPF/CNPJ" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Razão Social" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Nome Fantasia" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Comprador" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Email" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Telefone" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="hr m-10"></StackLayout>
+				<Label text="Endereço" class="h3" />
+				<StackLayout class="nt-input">
+					<TextField hint="CEP" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Rua" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Número" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Complemento" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Bairro" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Cidade" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Estado" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				</StackLayout>
+			</StackLayout>
+		</ScrollView>
+		<StackLayout flexShrink="0" class="bg-light border-top">
+			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary"/>
+		</StackLayout>
+	</FlexboxLayout>
+</Page>

@@ -1,0 +1,95 @@
+﻿/*
+In NativeScript, the app.css file is where you place CSS rules that
+you would like to apply to your entire application. Check out
+http://docs.nativescript.org/ui/styling for a full list of the CSS
+selectors and properties you can use to style UI components.
+
+/*
+In many cases you may want to use the NativeScript core theme instead
+of writing your own CSS rules. You can learn more about the 
+NativeScript core theme at https://github.com/nativescript/theme
+The imported CSS rules must precede all other types of rules.
+*/
+@import "~@nativescript/theme/css/core.css";
+@import "~@nativescript/theme/css/default.css";
+
+/* Place any CSS rules you want to apply on both iOS and Android here.
+This is where the vast majority of your CSS code goes. */
+
+/*
+The following CSS rule changes the font size of all Buttons that have the
+"-primary" class modifier.
+*/
+
+/* Buttons */
+Button.-primary {
+    font-size: 18;
+}
+Button.m-0 {
+    margin: 0px;
+}
+Button.t-25 {
+    font-size: 25px;
+}
+/*
+ActionBar{
+	margin-left:-15
+}*/
+
+
+/* Some Rules */
+.bg-primary{background: #20a8d8; color: #29363d;}
+.bg-danger{background: #f86c6b;}
+.bg-secondary{background: #a4b7c1;}
+.bg-warning{background: #ffc107;}
+.bg-info{background: #63c2de; color: #f0f3f5;}
+.bg-success{background: #4dbd74;}
+.bg-light{background: #f0f3f5;}
+.bg-dark{background: #29363d;}
+.bg-white{background: #ffffff;}
+
+
+.text-primary{color: #20a8d8;}
+.text-danger{color: #f86c6b;}
+.text-secondary{color: #a4b7c1;}
+.text-warning{color: #ffc107;}
+.text-info{color: #63c2de;}
+.text-success{color: #4dbd74;}
+.text-light{color: #f0f3f5;}
+.text-dark{color: #29363d;}
+
+
+/* width */
+.w-100{width: 100%;}
+.w-75{width: 75%;}
+.w-50{width: 50%;}
+.w-40{width: 40%;}
+.w-33{width: 33%;}
+.w-25{width: 25%;}
+
+/* font-size */
+.t-8{font-size: 8px;}
+.t-6{font-size: 6px;}
+
+.icon {
+   font-family: 'icomoon';
+}
+
+/* border */
+.border-no{border-color: transparent; border-width: 1;}
+.border{border-color: #000; border-width: 1;}
+.border-bottom{border-bottom-width: 1; border-color: #000000;}
+.border-left{border-left-width: 1; border-color: #000000;}
+.border-right{border-right-width: 1; border-color: #000000;}
+.border-top{border-top-width: 1; border-color: #000000;}
+.border-radius-sm{border-radius: 4;}
+.border-radius-md{border-radius: 10;}
+.border-radius-lg{border-radius: 20;}
+
+
+
+
+
+
+
+

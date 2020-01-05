@@ -1,0 +1,7 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo">
+	<FlexboxLayout flexDirection="column" class="p-y-10">
+		<Button text="ABRIR PEDIDO" class="-outline t-36 -rounded-sm"  tap="{{ gotoOrder }}" flexGrow="1" />
+		<Button text="MEUS PEDIDOS" class="-outline t-36 -rounded-sm"  tap="{{ gotoHistoric }}" flexGrow="1" />
+		<Button text="{{ '0xea13' | getIcon }}" class="icon -primary -rounded-sm t-25" tap="{{ logout }}" />
+	</FlexboxLayout>
+</Page>

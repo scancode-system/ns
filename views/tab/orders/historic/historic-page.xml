@@ -1,0 +1,22 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<ListView items="{{ orders }}" class="p-10">
+			<ListView.itemTemplate>
+				<StackLayout class="-separator">
+					<DockLayout stretchLastChild="false">
+						<Label text="{{ '#'+id }}" dock="left"  dock="right" />
+						<Label text="{{ order_client.corporate_name }}" class="p-r-20" dock="left" />
+					</DockLayout>
+					<DockLayout stretchLastChild="false">
+						<Label text="{{ order_client.cpf_cnpj }}" dock="left" />
+						<Label text="{{ historicoItems(status_id) }}" dock="right"  class="{{ 'text-'+historicoBg(status_id) }}"/>
+					</DockLayout>					
+				</StackLayout>
+			</ListView.itemTemplate>
+		</ListView>
+		<StackLayout orientation="horizontal" class="bg-info p-x-10 p-y-5" flexShrink="0">
+			<Label text="Total: " class="text-center t-20" />
+			<Label text="{{ total | concurrency }}" class="text-center t-20" />
+		</StackLayout>
+	</FlexboxLayout>
+</Page>

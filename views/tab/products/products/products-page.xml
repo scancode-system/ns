@@ -1,0 +1,13 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<ListView items="{{ products }}" itemTap="{{ gotoProduct }}">
+		<ListView.itemTemplate>
+			<StackLayout class="-separator p-y-12">
+				<FlexboxLayout>
+					<Label text="{{ description }}" flexGrow="1" class="p-t-0 t-14" />
+					<Label text="{{ price | concurrency }}" class="p-t-0 t-14" />
+				</FlexboxLayout>
+				<Label text="{{ sku }}" class="t-10 p-y-0" />
+			</StackLayout>
+		</ListView.itemTemplate>
+	</ListView>
+</Page>

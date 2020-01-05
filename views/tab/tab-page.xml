@@ -1,0 +1,27 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" navigatedFrom="onNavigatedFrom">
+	<ActionBar title="Pesquisar Produto..." icon=""></ActionBar>
+
+	<ActionBar class=" p-x-15">
+		<!--<SearchBar text="{{ search }}" class="white" id="search_bar" focus="false" />-->
+		<!--<StackLayout class="nt-input p-0 m-0 m-y-5 p-t-10 m-r-15">
+			<TextField hint="Pesquisar..." class="w-100 p-0 m-0 t-14"></TextField>
+		</StackLayout>-->
+		<!--
+		<StackLayout orientation="horizontal" class="p-0 m-0 m-y-5 p-t-10 m-r-15" >
+			<TextField hint="Pesquisar Produto..." class="-rounded w-100 p-0 m-0" android:layout_alignParentRight="true"  />
+		</StackLayout>-->
+		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ refresh }}" />
+	</ActionBar>
+	<!--<ActionItem icon="font://&#xe973;" class="fas icon bg-warning" ios.position="right" tap="openSettings" />-->
+	<TabView id="tab-view" tabBackgroundColor="white" androidOffscreenTabLimit="0">
+		<TabViewItem title="Pedidos" iconSource="">
+			<Frame defaultPage="views/tab/orders/orders-page" id="orders-frame" />
+		</TabViewItem>
+		<TabViewItem title="Sacola" iconSource="">
+			<Frame defaultPage="views/tab/bag/bag-page" id="bag-frame" />
+		</TabViewItem>
+		<TabViewItem title="Produtos" iconSource="">
+			<Frame defaultPage="views/tab/products/product_categories/product_categories-page" id="products-frame" />
+		</TabViewItem>
+	</TabView>
+</Page>

@@ -1,0 +1,9 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<ListView items="{{ categories }}" itemTap="{{ gotoProducts }}">
+		<ListView.itemTemplate>
+			<StackLayout class="-separator" class="p-y-20">
+				<Label text="{{ name }}" class="t-14" />
+			</StackLayout>
+		</ListView.itemTemplate>
+	</ListView>
+</Page>

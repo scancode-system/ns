@@ -1,0 +1,17 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<StackLayout class="p-x-15 p-y-10">
+		<FlexboxLayout>
+			<Label text="Clientes" class="h1" flexGrow="1" />
+			<Button text="{{ '0xe973' | getIcon }}" class="icon t-25 border-no text-right" tap="{{ gotoClientCreate }}" />
+		</FlexboxLayout>
+		<TextField hint="CNPJ / Razão Social" class="-border m-0" />
+		<ListView class="list-group1 m-t-101" items="{{ clients }}" itemTap="{{ gotoClientShow }}">
+			<ListView.itemTemplate>
+				<StackLayout class="-separator">
+					<Label text="{{ corporate_name }}" class="p-0 t-16" />
+					<Label text="{{ cpf_cnpj }}" class="p-0" />
+				</StackLayout>
+			</ListView.itemTemplate>
+		</ListView>
+	</StackLayout>
+</Page>

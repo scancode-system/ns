@@ -1,0 +1,9 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<Label text="Observação" class="h1 m-x-15" />
+		<TextView class="-border p-15 m-y-10 t-16" text="{{ observation }}" flexGrow="1" />
+		<StackLayout flexShrink="0" class="bg-light border-top">
+			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary"/>
+		</StackLayout>
+	</FlexboxLayout>
+</Page>

@@ -1,0 +1,17 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<Label text="Transportadora" class="h1 m-x-15" flexShrink="0" />
+		<TextField hint="Digite uma transportadora" class="-border m-0 m-x-15" flexShrink="0" />
+		<ListView class="m-x-15" items="{{ shipping_companies }}" itemTap="{{ gotoClientShow }}" flexGrow="1">
+			<ListView.itemTemplate>
+				<StackLayout class="-separator p-y-15">
+					<Label text="{{ name }}" class="p-0 t-16" />
+				</StackLayout>
+			</ListView.itemTemplate>
+		</ListView>
+		<StackLayout flexShrink="0" class="bg-light border-top">
+			<TextField hint="Nova transportadora" class="-border m-x-15 m-b-0" />
+			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary"/>
+		</StackLayout>
+	</FlexboxLayout>
+</Page>
