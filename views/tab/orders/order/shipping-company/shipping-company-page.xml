@@ -4,7 +4,7 @@
 			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-		<TextField text="{{ search }}" hint="Buscar Transportadora" class="-border m-0 m-x-15 m-t-15" flexShrink="0" visibility="{{ visibility_page }}"   />
+		<TextField text="{{ search }}" hint="Buscar Transportadora" class="-border m-0 m-x-15 m-t-15 t-14" flexShrink="0" visibility="{{ visibility_page }}"   />
 		<ListView class="m-x-15" items="{{ shipping_companies }}" itemTap="{{ itemTapUpdate }}" flexGrow="1" visibility="{{ visibility_page }}">
 			<ListView.itemTemplate>
 				<StackLayout class="-separator p-y-15">

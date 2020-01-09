@@ -96,7 +96,7 @@ export class ClientShowModel extends Observable {
 		this.set('processing_message', 'Atualizando Comprador');
 		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id+'/buyer', {buyer: this.buyer, email: this.email, phone: this.phone}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				console.log(result.data);
+
 				Frame.getFrameById('orders-frame').goBack();
 			},
 			(error) => {

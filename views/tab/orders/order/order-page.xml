@@ -9,21 +9,19 @@
 				<Label text="{{ 'Pedido #'+order.id }}" class="t-25 bg-light p-x-15 p-y-10" />
 
 				<Label text="Cliente" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.order_client.buyer ) ? order.order_client.client_id+'# '+order.order_client.buyer: 'Indefinido' }}" class="{{ (order.order_client.buyer ) ? 'icon -primary m-0 t-18 m-x-10  p-l-15 text-left': 'icon bg-danger m-0 t-18 m-x-10  p-l-15 text-left' }}" tap="{{ gotoClient }}" />
+				<Button text="{{ (order.order_client.buyer ) ? order.order_client.client_id+'# '+order.order_client.buyer: 'Indefinido' }}" class="{{ (order.order_client.buyer ) ? 'icon bg-success m-0 t-18 m-x-10  p-l-15 text-left': 'icon bg-danger m-0 t-18 m-x-10  p-l-15 text-left' }}" tap="{{ gotoClient }}" />
 
 				<Label text="Pagamento" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.order_payment.payment_id ) ? order.order_payment.description: 'Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? 'icon  -primary m-0 t-18 m-x-10  p-l-15 text-left' : 'icon  bg-danger m-0 t-18 m-x-10  p-l-15 text-left' }}" tap="{{ gotoPayment }}" />
-
-				<StackLayout class="hr" style="margin:40px 0px 0px 0px;"></StackLayout>
+				<Button text="{{ (order.order_payment.payment_id ) ? order.order_payment.description: 'Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? 'icon  bg-success m-0 t-18 m-x-10  p-l-15 text-left' : 'icon  bg-danger m-0 t-18 m-x-10  p-l-15 text-left' }}" tap="{{ gotoPayment }}" />
 
 				<Label text="Observação" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.observation ) ? 'Obervação Registrada': 'Sem Observação' }}" class="icon -primary m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoObservation }}" />
+				<Button text="{{ (order.observation ) ? 'Obervação Registrada': 'Sem Observação' }}" class="icon bg-success m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoObservation }}" />
 
 				<Label text="Entrega" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.full_delivery ) ? 'Integral': 'Parcial' }}" class="icon -primary m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoDelivery }}" />
+				<Button text="{{ (order.full_delivery ) ? 'Integral': 'Parcial' }}" class="icon bg-success m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoDelivery }}" />
 
 				<Label text="Transportadora" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? order.order_shipping_company.description: 'Indefinido' }}" class="icon -primary m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoShippingCompany }}" />
+				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? order.order_shipping_company.description: 'Indefinido' }}" class="icon bg-success m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoShippingCompany }}" />
 
 				<!--<Label text="Desconto" class="t-18 p-x-15 p-b-0 m-t-10" />
 				<Button text="Indefinido" class="icon -primary m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoDiscount }}" />-->
@@ -36,7 +34,7 @@
 				<Label text="{{ order.total | concurrency }}" class="t-18" />
 			</FlexboxLayout>
 			<FlexboxLayout>
-				<Button text="{{ '0xe90f' | getIcon }}" class="icon -primary m-0 t-25" flexGrow="1"  />
+				<Button text="{{ '0xe90f' | getIcon }}" class="icon bg-primary m-0 t-25" flexGrow="1" tap="{{ camera }}"  />
 				<Button text="{{ '0xea10' | getIcon }}" class="icon -primary m-0 t-25" flexGrow="1"/>
 			</FlexboxLayout>	
 		</StackLayout>

@@ -1,20 +1,9 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" navigatedFrom="onNavigatedFrom" loaded="{{ loaded }}">
-	<ActionBar title="Pesquisar Produto..." icon=""></ActionBar>
-
-	<ActionBar class=" p-x-15">
-		<!--<SearchBar text="{{ search }}" class="white" id="search_bar" focus="false" />-->
-		<!--<StackLayout class="nt-input p-0 m-0 m-y-5 p-t-10 m-r-15">
-			<TextField hint="Pesquisar..." class="w-100 p-0 m-0 t-14"></TextField>
-		</StackLayout>-->
-		<!--
-		<StackLayout orientation="horizontal" class="p-0 m-0 m-y-5 p-t-10 m-r-15" >
-			<TextField hint="Pesquisar Produto..." class="-rounded w-100 p-0 m-0" android:layout_alignParentRight="true"  />
-		</StackLayout>-->
-		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ refresh }}" />
+	<ActionBar title="teste" class=" p-x-15">
+		<ActionItem icon="font://&#xe967;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_back_tab }}" visibility="{{ visibility_products }}" />
+		<ActionItem icon="font://&#xe986;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_search }}" visibility="{{ visibility_tab }}" />
+		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_refresh }}" />
 	</ActionBar>
-	<!--<ActionItem icon="font://&#xe973;" class="fas icon bg-warning" ios.position="right" tap="openSettings" />-->
-
-
 	<FlexboxLayout>
 		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing_tab }}" flexGrow="1">
 			<Label text="{{ processing_message_tab }}" class="t-12 m-r-20" alignSelf="center" />
@@ -31,5 +20,17 @@
 				<Frame defaultPage="views/tab/products/product_categories/product_categories-page" id="products-frame" />
 			</TabViewItem>
 		</TabView>
+		<FlexboxLayout  flexDirection="column" visibility="{{ visibility_products }}" flexGrow="1">
+			<TextField text="{{ search }}" hint="Buscar Produtos" class="-border m-0 t-14 m-15" flexShrink="0" />
+			<ListView class="list-group1 m-t-101 m-x-15" items="{{ products }}" itemTap="{{ gotoProduct }}" flexGrow="1" >
+				<ListView.itemTemplate>
+					<StackLayout class="-separator">
+						<Label text="{{ description }}" class="p-0 t-16" />
+						<Label text="{{ sku }}" class="p-0" />
+					</StackLayout>
+				</ListView.itemTemplate>
+			</ListView>	
+		</FlexboxLayout>
+		<TextView  id="scan" text="{{ scan }}"  class="p-0 m-0" focus="{{ focusColetor }}" width="1"/>
 	</FlexboxLayout>
 </Page>

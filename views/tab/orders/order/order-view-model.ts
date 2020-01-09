@@ -2,6 +2,8 @@ import { Observable } from "tns-core-modules/data/observable";
 import { Frame } from "tns-core-modules/ui/frame";
 import axios from "axios";
 import * as settings from "tns-core-modules/application-settings";
+import { BarcodeScanner } from "nativescript-barcodescanner";
+import { TabView } from "tns-core-modules/ui/tab-view";
 
 export class OrderModel extends Observable {
 
@@ -31,6 +33,49 @@ export class OrderModel extends Observable {
 				alert(error.response.data.message);
 			});
 	}
+
+	public camera(args){
+		let barcodescanner = new BarcodeScanner();
+
+		barcodescanner.scan({
+			formats: "QR_CODE, EAN_13,CODE_128",
+			showFlipCameraButton: true,
+			preferFrontCamera: false,
+			showTorchButton: true,
+			beepOnScan: true,
+			torchOn: false,
+			resultDisplayDuration: 0,
+			openSettingsIfPermissionWasPreviouslyDenied: true
+		}).then((result) => {
+			var that = this;
+			setTimeout(function(){ that.search(result.text); }, 100);
+		}, (errorMessage) => {
+			alert('Erro scanning');
+		});
+	}
+
+	public search(search){
+		var products = JSON.parse(settings.getString('products', '[]'));
+		var product = products.find(
+			(product) => {
+				var located = false;
+				if(product.barcode == search){
+					located = true;
+				}
+				if(product.sku == search){
+					located = true;
+				}
+				return located;
+			});
+		if(product) {
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: product.id,  backstackVisible: false});
+			var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
+			tab_view.selectedIndex = 2;
+
+		} else {
+			alert('Produto não encontrado, sincronize os dados clicando no botão superior direito, na barra de títulos.');
+		}
+	}		
 
 	public gotoClient(){
 		var order_client = this.order.order_client;
