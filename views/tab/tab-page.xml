@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" navigatedFrom="onNavigatedFrom">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" navigatedFrom="onNavigatedFrom" loaded="{{ loaded }}">
 	<ActionBar title="Pesquisar Produto..." icon=""></ActionBar>
 
 	<ActionBar class=" p-x-15">
@@ -13,15 +13,23 @@
 		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ refresh }}" />
 	</ActionBar>
 	<!--<ActionItem icon="font://&#xe973;" class="fas icon bg-warning" ios.position="right" tap="openSettings" />-->
-	<TabView id="tab-view" tabBackgroundColor="white" androidOffscreenTabLimit="0">
-		<TabViewItem title="Pedidos" iconSource="">
-			<Frame defaultPage="views/tab/orders/orders-page" id="orders-frame" />
-		</TabViewItem>
-		<TabViewItem title="Sacola" iconSource="">
-			<Frame defaultPage="views/tab/bag/bag-page" id="bag-frame" />
-		</TabViewItem>
-		<TabViewItem title="Produtos" iconSource="">
-			<Frame defaultPage="views/tab/products/product_categories/product_categories-page" id="products-frame" />
-		</TabViewItem>
-	</TabView>
+
+
+	<FlexboxLayout>
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing_tab }}" flexGrow="1">
+			<Label text="{{ processing_message_tab }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		<TabView id="tab-view" tabBackgroundColor="white" androidOffscreenTabLimit="0" visibility="{{ visibility_tab }}">
+			<TabViewItem title="Pedidos" iconSource="">
+				<Frame defaultPage="views/tab/orders/orders-page" id="orders-frame" />
+			</TabViewItem>
+			<TabViewItem title="Sacola" iconSource="">
+				<Frame defaultPage="views/tab/bag/bag-page" id="bag-frame" />
+			</TabViewItem>
+			<TabViewItem title="Produtos" iconSource="">
+				<Frame defaultPage="views/tab/products/product_categories/product_categories-page" id="products-frame" />
+			</TabViewItem>
+		</TabView>
+	</FlexboxLayout>
 </Page>

@@ -7,7 +7,8 @@ application.on(launchEvent, (args: LaunchEventData) => {
 });
 
 application.on(resumeEvent, (args: LaunchEventData) => {
-	settings.setString('api', 'http://192.168.0.21/dashboard/api');
+	settings.setString('url', 'http://192.168.0.21/dashboard');
+	settings.setString('api', settings.getString('url')+'/api');
 	//settings.setString('username', 'http://192.168.0.100/api/');
 });
 

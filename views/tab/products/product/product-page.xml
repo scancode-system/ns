@@ -1,32 +1,36 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		<ScrollView flexGrow="1">
+		
+		<FlexboxLayout justifyContent="center" visibility="{{ loading }}" flexGrow="1">
+			<ActivityIndicator busy="true" loaded="indicatorLoaded"/>				
+		</FlexboxLayout>
+
+		<ScrollView flexGrow="1" visibility="{{ content }}">
 			<StackLayout>
 				<StackLayout class="p-x-15 p-t-15">
-					<Image src="https://placem.at/people?w=250" class="w-100 img-rounded" />
+					<Image src="{{ url+product.image }}" class="w-100 img-rounded" />
 				</StackLayout>
 				<StackLayout class="p-y-8">
-					<Label text="BIKINI AMARELO" class="t-18 p-y-0 text-center" />
-					<Label text="CAC150" class="t-10 text-secondary p-y-0 text-center"/>
+					<Label text="{{ product.description }}" class="t-18 p-y-0 text-center" />
+					<Label text="{{ product.sku }}" class="t-10 text-secondary p-y-0 text-center"/>
 				</StackLayout>
 				<FlexboxLayout class="bg-light p-y-10 p-x-15">
 					<StackLayout flexGrow="1">
 						<Label text="Minimo" class="t-8 text-center p-y-0" />
-						<Label text="12" class="t-14 text-center p-y-0" />
+						<Label text="{{ product.min_qty }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 					<StackLayout flexGrow="1">
 						<Label text="Preço" class="t-8 text-center p-y-0" />
-						<Label text="R$ 1.3434,32" class="t-14 text-center p-y-0" />
+						<Label text="{{ product.price | concurrency }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 					<StackLayout flexGrow="1">
 						<Label text="Múltiplo" class="t-8 text-center p-y-0" />
-						<Label text="3" class="t-14 text-center p-y-0" />
+						<Label text="{{ product.multiple }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 				</FlexboxLayout>
 			</StackLayout>
 		</ScrollView>
-
-		<StackLayout class="p-x-15 border-top">
+		<StackLayout class="p-x-15 border-top" visibility="{{ ready }}" visibility="{{ content }}">
 			<FlexboxLayout>
 				<Button text="{{ '0xea0a' | getIcon }}" class="icon -primary m-0 t-25"   />	
 				<Button text="{{ '0xea0b' | getIcon }}" class="icon -primary m-0 t-25"   />

@@ -1,13 +1,12 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
 	<ActionBar title="Login" icon=""></ActionBar>
 	<FlexboxLayout flexDirection="column" class="m-t-30">
-		<TextField text="{{ email }}" hint="Email" class="-border t-14" />
-		<TextField text="{{ password }}" hint="Senha" class="-border t-14" secure="true"  />
-		<Button text="{{ '0xea13' | getIcon }}" class="icon -primary m-t-10 t-25 " tap="{{ login }}" />
-
-		<!--<FlexboxLayout flexGrow="1" justifyContent="center">
-			<Button text="{{ '0xe994' | getIcon }}" class="icon -primary t-25" alignSelf="flex-end" tap="{{ showModal }}"/>
-		</FlexboxLayout>-->
-
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		<TextField text="{{ email }}" hint="Email" class="-border t-14" visibility="{{ visibility_page }}" />
+		<TextField text="{{ password }}" hint="Senha" class="-border t-14" secure="true" visibility="{{ visibility_page }}" />
+		<Button text="{{ '0xea13' | getIcon }}" class="icon -primary m-t-10 t-25 " tap="{{ login }}" visibility="{{ visibility_page }}" />
 	</FlexboxLayout>
 </Page>

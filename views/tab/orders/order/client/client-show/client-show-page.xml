@@ -1,63 +1,67 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		<ScrollView flexGrow="1">
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		<ScrollView flexGrow="1" visibility="{{ visibility_page }}">
 			<StackLayout class="p-x-15 p-y-10">
 				<StackLayout class="nt-input">
-					<TextField hint="CPF/CNPJ" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="CPF/CNPJ" text="{{ client.cpf_cnpj }}" class="m-x-0 t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Razão Social" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Razão Social" text="{{ client.corporate_name }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Nome Fantasia" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Nome Fantasia" text="{{ client.fantasy_name }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 				<StackLayout class="nt-input">
-					<TextField hint="CEP" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
-				</StackLayout>
-
-				<StackLayout class="nt-input">
-					<TextField hint="Rua" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="CEP" text="{{ client.client_address.postcode }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Número" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Rua" text="{{ client.client_address.street }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Complemento" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Número" text="{{ client.client_address.number }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Bairro" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Complemento" text="{{ client.client_address.apartment }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Cidade" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Bairro" text="{{ client.client_address.neighborhood }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 
 				<StackLayout class="nt-input">
-					<TextField hint="Estado" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+					<TextField hint="Cidade" text="{{ client.client_address.city }}" class="m-x-0  t-14" editable="false"  />
+				</StackLayout>
+
+				<StackLayout class="nt-input">
+					<TextField hint="Estado" text="{{ client.client_address.st }}" class="m-x-0  t-14" editable="false"  />
 				</StackLayout>
 			</StackLayout>
 		</ScrollView>
-		<StackLayout flexShrink="0" class="bg-light border-top p-x-15 p-y-5">
-			<Label text="Dados Comprador" class="h3" />
+		<StackLayout flexShrink="0" class="bg-light border-top p-x-15 p-y-5" visibility="{{ visibility_page }}">
+			<Label text="Dados do Comprador" class="m-t-10 t-20 text-center" />
 			<StackLayout class="nt-input">
-				<TextField hint="Comprador" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				<TextField hint="Comprador" text="{{ buyer }}" class="m-x-0  t-14"></TextField>
 			</StackLayout>
 
 			<StackLayout class="nt-input">
-				<TextField hint="Email" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				<TextField hint="Email" text="{{ email }}" class="m-x-0  t-14"></TextField>
 			</StackLayout>
 
 			<StackLayout class="nt-input">
-				<TextField hint="Telefone" text="{{ cpf_cnpj }}" class="m-x-0"></TextField>
+				<TextField hint="Telefone" text="{{ phone }}" class="m-x-0  t-14"></TextField>
 			</StackLayout>
 			<FlexboxLayout>
-				<Button text="{{ '0xe962' | getIcon }}" class="icon -primary m-0" flexGrow="1" />
-				<Button text="{{ '0xe9ac' | getIcon }}" class="icon bg-danger t-18 m-0" flexGrow="1" />
+				<Button text="{{ '0xe962' | getIcon }}" class="icon -primary m-0" flexGrow="1" tap="{{ update }}" />
+				<Button text="{{ '0xe967' | getIcon }}" class="icon bg-danger t-18 m-0" flexGrow="1" tap="{{ gotoList }}" />
 			</FlexboxLayout>
 		</StackLayout>
 	</FlexboxLayout>

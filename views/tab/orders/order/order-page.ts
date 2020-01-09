@@ -4,5 +4,5 @@ import { OrderModel } from "./order-view-model";
 
 export function navigatingTo(args: EventData) {
     const page = <Page>args.object;
-    page.bindingContext = new OrderModel();
+    page.bindingContext = new OrderModel(page.navigationContext);
 }

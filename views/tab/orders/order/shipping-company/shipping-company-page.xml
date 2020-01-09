@@ -1,17 +1,20 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		<Label text="Transportadora" class="h1 m-x-15" flexShrink="0" />
-		<TextField hint="Digite uma transportadora" class="-border m-0 m-x-15" flexShrink="0" />
-		<ListView class="m-x-15" items="{{ shipping_companies }}" itemTap="{{ gotoClientShow }}" flexGrow="1">
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		<TextField text="{{ search }}" hint="Buscar Transportadora" class="-border m-0 m-x-15 m-t-15" flexShrink="0" visibility="{{ visibility_page }}"   />
+		<ListView class="m-x-15" items="{{ shipping_companies }}" itemTap="{{ itemTapUpdate }}" flexGrow="1" visibility="{{ visibility_page }}">
 			<ListView.itemTemplate>
 				<StackLayout class="-separator p-y-15">
 					<Label text="{{ name }}" class="p-0 t-16" />
 				</StackLayout>
 			</ListView.itemTemplate>
 		</ListView>
-		<StackLayout flexShrink="0" class="bg-light border-top">
-			<TextField hint="Nova transportadora" class="-border m-x-15 m-b-0" />
-			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary"/>
+		<StackLayout flexShrink="0" class="bg-light border-top" visibility="{{ visibility_page }}">
+			<TextField text="{{ name }}" hint="Nova Transportadora" class="-border m-x-15 m-b-0 t-14" />
+			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary" tap="{{ store }}" />
 		</StackLayout>
 	</FlexboxLayout>
 </Page>
