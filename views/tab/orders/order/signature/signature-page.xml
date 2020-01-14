@@ -1,0 +1,8 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+	<FlexboxLayout flexDirection="column">
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+	</FlexboxLayout>
+</Page>

@@ -1,8 +1,8 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
-	<FlexboxLayout flexDirection="column" class="p-x-15 p-y-10">
+	<FlexboxLayout flexDirection="column" class="p-x-15 p-y-15">
 		<FlexboxLayout flexShrink="0">
 			<TextField text="{{ search }}" hint="CNPJ/Razão Social" class="-border m-0 t-14" flexGrow="1" />
-			<Button text="{{ '0xe973' | getIcon }}" class="icon t-25 border-no -primary m-0 m-l-15" tap="{{ gotoClientCreate }}" flexShrink="0" />
+			<Button text="{{ '0xe973' | getIcon }}" class="icon t-25 border-no bg-primary m-0" tap="{{ gotoClientCreate }}" flexShrink="0" />
 		</FlexboxLayout>
 		<ListView class="list-group1 m-t-101" items="{{ clients }}" itemTap="{{ gotoClientShow }}" >
 			<ListView.itemTemplate>

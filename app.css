@@ -60,8 +60,9 @@ ActionBar{
 
 
 /*  oulines */
-.-outline-danger{height:40;border-width:1;margin:8 16;border-color: #f86c6b}
-.-outline-success{height:40;border-width:1;margin:8 16;border-color: #4dbd74}
+.-outline-danger{height:40;border-width:1;margin:8 16;border-color: #f86c6b;}
+.-outline-warning{height:40;border-width:1;margin:8 16;border-color: #ffc107;}
+.-outline-success{height:40;border-width:1;margin:8 16;border-color: #4dbd74;}
 .-outline-dark{height:40;border-width:1;margin:8 16; border-color: #29363d;}
 
 

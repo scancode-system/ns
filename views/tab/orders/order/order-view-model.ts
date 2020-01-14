@@ -51,6 +51,10 @@ export class OrderModel extends Observable {
 		Frame.getFrameById('orders-frame').navigate("views/tab/orders/order/shipping-company/shipping-company-page");
 	}
 
+	public gotoSignature(){
+		Frame.getFrameById('orders-frame').navigate("views/tab/orders/order/signature/signature-page");		
+	}
+
 	public discountPrompt(){
 		dialogs.prompt({
 			title: "Desconto",

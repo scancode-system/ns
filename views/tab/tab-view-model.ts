@@ -143,6 +143,11 @@ export class TabModel extends Observable {
 		this.updateProducts();
 	}
 
+	public actionScanFocus(){
+		alert('Leitor de código de Barras Focado.');
+		this.scanFocus();
+	}
+
 	public updateProducts(){
 		this.set('visibility_processing_tab', 'visible');
 		this.set('visibility_tab', 'collapsed');

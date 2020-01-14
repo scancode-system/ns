@@ -17,12 +17,13 @@
 						<Label text="{{ order.items.length }}" />	
 					</FlexboxLayout>
 				</FlexboxLayout>
-				<Button text="{{ (order.order_client.buyer ) ? 'Comprador: '+order.order_client.buyer: 'Cliente Indefinido' }}" class="{{ (order.order_client.buyer ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left': '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoClient }}" />
-				<Button text="{{ (order.order_payment.payment_id ) ? 'Pagamento: '+order.order_payment.description: 'Pagamento Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left' : '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoPayment }}" />
-				<Button text="{{ (order.observation ) ? 'Observação: Registrada': 'Observação: Em branco' }}" class="-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left" tap="{{ gotoObservation }}" />
-				<Button text="{{ (order.full_delivery ) ? 'Entrega: Integral': 'Entrega: Parcial' }}" class="-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left" tap="{{ gotoDelivery }}" />
-				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? 'Transportadora: '+order.order_shipping_company.description: 'Transportadora: Indefinido' }}" class="-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left" tap="{{ gotoShippingCompany }}" />
-				<Button text="Aplicar Desconto" class="-outline-dark m-x-15 m-t-15 p-l-15 t-18" tap="{{ gotoDiscount }}" tap="{{ discountPrompt }}" />
+				<Button text="{{ (order.order_client.buyer ) ? 'Comprador: '+order.order_client.buyer: 'Cliente: Indefinido' }}" class="{{ (order.order_client.buyer ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left': '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoClient }}" />
+				<Button text="{{ (order.order_payment.payment_id ) ? 'Pagamento: '+order.order_payment.description: 'Pagamento: Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? '-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left' : '-outline-danger m-x-15 m-t-10 p-l-15 t-18 text-left' }}" tap="{{ gotoPayment }}" />
+				<Button text="{{ (order.observation ) ? 'Observação: Registrada': 'Observação: Em branco' }}" class="-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left" tap="{{ gotoObservation }}" />
+				<Button text="{{ (order.full_delivery ) ? 'Entrega: Integral': 'Entrega: Parcial' }}" class="-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left" tap="{{ gotoDelivery }}" />
+				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? 'Transportadora: '+order.order_shipping_company.description: 'Transportadora: Indefinido' }}" class="-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left" tap="{{ gotoShippingCompany }}" />
+				<Button text="Assinatura" class="{{ (order.signature)?'-outline-success m-x-15 m-t-15 p-l-15 t-18':'-outline-warning m-x-15 m-t-10 p-l-15 t-18' }}" tap="{{ gotoSignature }}" />
+				<Button text="Desconto" class="-outline-dark m-x-15 m-t-10 p-l-15 t-18" tap="{{ gotoDiscount }}" tap="{{ discountPrompt }}" />
 			</StackLayout>
 		</ScrollView>
 		<StackLayout class="bg-light p-x-15" flexShrink="0" visibility="{{ (order.status_id==1)?'visible':'collapsed' }}" androidElevation="12">

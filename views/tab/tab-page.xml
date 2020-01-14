@@ -4,6 +4,7 @@
 		<ActionItem icon="font://&#xe967;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_back_tab }}" visibility="{{ visibility_products }}" />
 		<ActionItem icon="font://&#xe986;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_search }}" visibility="{{ visibility_tab }}" />
 		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_refresh }}" />
+		<ActionItem icon="font://&#xe938;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ actionScanFocus }}" />
 	</ActionBar>
 	<FlexboxLayout>
 		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing_tab }}" flexGrow="1">
@@ -32,6 +33,6 @@
 				</ListView.itemTemplate>
 			</ListView>	
 		</FlexboxLayout>
-		<TextView  id="text-view-scan" text="{{ scan }}"  class="p-0 m-0" focus="{{ scanFocus }}" width="1"/>
+		<TextView  id="text-view-scan" text="{{ scan }}"  class="p-0 m-0" focus="{{ scanFocus }}" width="100" width="1"/>
 	</FlexboxLayout>
 </Page>
