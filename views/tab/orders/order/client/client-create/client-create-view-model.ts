@@ -68,8 +68,10 @@ export class ClientCreateModel extends Observable {
 				} else if(error.response.status == 422)  {
 					this.set('visibility_processing', 'collapsed');
 					this.set('visibility_page', 'visible');
+					/*var errors = Object.keys(error.response.data.errors);
+					alert(error.response.data.errors[errors[0]]);*/
 					var errors = Object.keys(error.response.data.errors);
-					alert(error.response.data.errors[errors[0]]);
+					alert(error.response.data.errors[errors[0]][0]);
 				}else {
 					alert('Chame o administrador do sistema');
 				}
@@ -80,6 +82,7 @@ export class ClientCreateModel extends Observable {
 		this.set('processing_message', 'Registrando Cliente no Pedido');
 		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id, {client_id: id}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				settings.setString('order', JSON.stringify(result.data));
 				Frame.getFrameById('orders-frame').goBack();
 			},
 			(error) => {
@@ -90,9 +93,13 @@ export class ClientCreateModel extends Observable {
 					settings.remove('clients');
 					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
-				} else {
+				} else if(error.response.status == 403){
+					alert(error.response.data);					
+				}else {
 					alert('Chame o administrador do sistema');
 				}
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
 			});
 	}
 

@@ -7,8 +7,8 @@ application.on(launchEvent, (args: LaunchEventData) => {
 });
 
 application.on(resumeEvent, (args: LaunchEventData) => {
-	settings.setString('url', 'http://192.168.0.21/dashboard');
-	settings.setString('api', settings.getString('url')+'/api');
+	//settings.setString('url', 'http://192.168.0.21/dashboardw');
+	//settings.setString('api', settings.getString('url')+'/api');
 	//settings.setString('username', 'http://192.168.0.100/api/');
 });
 
@@ -32,9 +32,11 @@ function historicoBg(value){
 	if(value == 1 || value == 6){
 		return 'success';
 	}else if(value == 2){
+		return 'primary';
+	} else if(value == 3) {
 		return 'danger';
-	} else  {
-		return 'secondary';
+	} else if(value == 4) {
+		return 'info';
 	} 
 }
 
@@ -47,13 +49,16 @@ function getIcon(value){
 	return String.fromCharCode(value);
 }
 
+function urlBefore(value){
+	return settings.getString('url', '')+'/'+value;
+}
 
-application.setResources( { getIcon, concurrency, historicoItems, historicoBg});
+application.setResources( { getIcon, concurrency, historicoItems, historicoBg , urlBefore});
 
 // colcoar aqui condicao para ver qual frame vai ser carregado
 
 
-var saller = settings.getNumber('saller');
+var saller = settings.getString('saller');
 if(saller){
 	application.run({ moduleName: "views/tab/frame-root" });
 } else {

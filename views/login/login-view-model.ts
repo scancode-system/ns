@@ -16,10 +16,32 @@ export class LoginModel extends Observable {
 	constructor() {
 		super();
 		this.email =  settings.getString('username');
-		this.password =  settings.getString('password');
+		this.password =  '';
 
-		this.visibility_processing = 'collapsed';
-		this.visibility_page = 'visible';
+		settings.remove('order');
+		settings.remove('saller');
+		settings.remove('products');
+		settings.remove('clients');
+		settings.remove('shipping_companies');		
+	}
+
+	public loaded(){
+
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Checando conexão');
+		axios.get(settings.getString("api")+'/dashboard/check').then(
+			(result) => {
+				if(result.status == 200){
+					this.set('visibility_processing', 'collapsed');
+					this.set('visibility_page', 'visible');
+				} else {
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/url/url-page", clearHistory: true});
+				}
+			},
+			(error) => {
+				Frame.getFrameById("root-frame").navigate({moduleName: "views/url/url-page", clearHistory: true});
+			});
 	}
 
 	public login() {
@@ -30,7 +52,7 @@ export class LoginModel extends Observable {
 			(result) => {
 				settings.setString('username', this.email);
 				settings.setString('password', this.password);
-				settings.setNumber('saller', result.data.id);
+				settings.setString('saller', JSON.stringify(result.data));
 				this.updateProducts();
 			},
 			(error) => {
@@ -45,7 +67,7 @@ export class LoginModel extends Observable {
 	}
 
 	public updateProducts(){
-		this.set('processing_message', 'Atualizando Produtos');
+		this.set('processing_message', 'Sincronizando Produtos');
 		axios.get(settings.getString("api")+'/products', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('products', JSON.stringify(result.data));
@@ -54,10 +76,6 @@ export class LoginModel extends Observable {
 			(error) => {
 				if(error.response.status == 401)
 				{
-					settings.remove('saller');
-					settings.remove('products');
-					settings.remove('clients');
-					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
 				} else {
 					alert('Chame o administrador do sistema');
@@ -66,7 +84,7 @@ export class LoginModel extends Observable {
 	}
 
 	public updateShippingCompanies(){
-		this.set('processing_message', 'Atualizando Transportadoras');
+		this.set('processing_message', 'Sincronizando Transportadoras');
 		axios.get(settings.getString("api")+'/shipping_companies/load', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('shipping_companies', JSON.stringify(result.data));
@@ -75,10 +93,6 @@ export class LoginModel extends Observable {
 			(error) => {
 				if(error.response.status == 401)
 				{
-					settings.remove('saller');
-					settings.remove('products');
-					settings.remove('clients');
-					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
 				} else {
 					alert('Chame o administrador do sistema');
@@ -87,7 +101,7 @@ export class LoginModel extends Observable {
 	}
 
 	public updateClients(){
-		this.set('processing_message', 'Atualizando Clientes');
+		this.set('processing_message', 'Sincronizando Clientes');
 		axios.get(settings.getString("api")+'/clients/load', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('clients', JSON.stringify(result.data));
@@ -96,10 +110,6 @@ export class LoginModel extends Observable {
 			(error) => {
 				if(error.response.status == 401)
 				{
-					settings.remove('saller');
-					settings.remove('products');
-					settings.remove('clients');
-					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
 				} else {
 					alert('Chame o administrador do sistema');

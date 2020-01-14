@@ -1,11 +1,10 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		
-		<FlexboxLayout justifyContent="center" visibility="{{ loading }}" flexGrow="1">
-			<ActivityIndicator busy="true" loaded="indicatorLoaded"/>				
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-
-		<ScrollView flexGrow="1" visibility="{{ content }}">
+		<ScrollView flexGrow="1" visibility="{{ visibility_page }}">
 			<StackLayout>
 				<StackLayout class="p-x-15 p-t-15">
 					<Image src="{{ url+product.image }}" class="w-100 img-rounded" />
@@ -16,28 +15,70 @@
 				</StackLayout>
 				<FlexboxLayout class="bg-light p-y-10 p-x-15">
 					<StackLayout flexGrow="1">
-						<Label text="Minimo" class="t-8 text-center p-y-0" />
+						<Label text="Minimo" class="t-10 text-center p-y-0" />
 						<Label text="{{ product.min_qty }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 					<StackLayout flexGrow="1">
-						<Label text="Preço" class="t-8 text-center p-y-0" />
+						<Label text="Preço Base" class="t-10 text-center p-y-0" />
 						<Label text="{{ product.price | concurrency }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 					<StackLayout flexGrow="1">
-						<Label text="Múltiplo" class="t-8 text-center p-y-0" />
+						<Label text="Múltiplo" class="t-10 text-center p-y-0" />
 						<Label text="{{ product.multiple }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 				</FlexboxLayout>
+				
+				<FlexboxLayout class="bg-light  p-y-10 p-x-15" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
+					<StackLayout flexGrow="1">
+						<Label text="Quantidade em Estoque" class="t-10 text-center p-y-0" />
+						<Label text="{{ (product.product_stock)?product.product_stock.left:'' }}" class="t-14 text-center p-y-0" />
+					</StackLayout>
+				</FlexboxLayout>
+
+				<FlexboxLayout class="bg-light  p-y-10 p-x-15" visibility="{{ (product.product_stock_now_after)?'visible':'collapsed' }}">
+					<StackLayout flexGrow="1">
+						<Label text="Quantidade Atual" class="t-10 text-center p-y-0" />
+						<Label text="{{ (product.product_stock_now_after)?product.product_stock_now_after.left_now:'' }}" class="t-14 text-center p-y-0" />
+					</StackLayout>
+					<StackLayout flexGrow="1">
+						<Label text="Quantidade Futuro" class="t-10 text-center p-y-0" />
+						<Label text="{{ (product.product_stock_now_after)?product.product_stock_now_after.left_after:'' }}" class="t-14 text-center p-y-0" />
+					</StackLayout>
+				</FlexboxLayout>
+				<FlexboxLayout flexDirection="column" visibility="{{ (product.price_list_products )?'visible':'collapsed' }}">
+					<Label text="Tebela de Preço" class="p-y-5 bg-info text-center t-18" />
+					<ListView items="{{ product.price_list_products }}" rowHeight="45" height="{{ (45*product.price_list_products.length) }}" >
+						<ListView.itemTemplate>
+							<StackLayout  class="p-x-30" orientation="horizontal">
+								<Label text="{{ price_list.name }}" class="w-50 "  flexGrow="1" />								
+								<Label text="{{ price | concurrency }}" class="w-50" flexGrow="1" />
+							</StackLayout>
+						</ListView.itemTemplate>
+					</ListView>
+				</FlexboxLayout>
+				<FlexboxLayout flexDirection="column" visibility="{{ (product.price_per_quantities )?'visible':'collapsed' }}" >
+					<Label text="Preços Promocionais" class="p-y-5 bg-info text-center t-18" />
+					<ListView items="{{ product.price_per_quantities }}" rowHeight="45" height="{{ (45*product.price_per_quantities.length) }}" >
+						<ListView.itemTemplate>
+							<StackLayout  class="p-x-30" orientation="horizontal">
+								<Label text="{{ qty }}" class="w-50 "  flexGrow="1" />								
+								<Label text="{{ price | concurrency }}" class="w-50" flexGrow="1" />
+							</StackLayout>
+						</ListView.itemTemplate>
+					</ListView>
+				</FlexboxLayout>
+				<ListPicker items="{{ product.family }}"  textField="family_alias" valueField="id" selectedIndex="{{ index_product_family }}" selectedValue="{{ selected__product_family_id }}" class="m-x-15 m-t-15 border border-radius-md"  visibility="{{ (product.family.length>1)?'visible':'collapsed' }}" />
+				<Button text="Selecionar Variação" class="bg-primary m-0 m-x-15 t-14" tap="{{ selectProductTap }}" visibility="{{ (product.family.length>1)?'visible':'collapsed' }}" />
 			</StackLayout>
 		</ScrollView>
-		<StackLayout class="p-x-15 border-top" visibility="{{ ready }}" visibility="{{ content }}">
+		<StackLayout class="p-x-15 bg-light" visibility="{{ ready }}" visibility="{{ visibility_edit_item }}" flexShrink="0" androidElevation="12">
 			<FlexboxLayout>
-				<Button text="{{ '0xea0a' | getIcon }}" class="icon -primary m-0 t-25"   />	
-				<Button text="{{ '0xea0b' | getIcon }}" class="icon -primary m-0 t-25"   />
-				<Label text="5" class="t-25 text-center p-y-10" flexGrow="1" />
-				<Button text="0%" class="icon -primary m-0 t-25"  />
+				<Button text="{{ '0xea0a' | getIcon }}" class="icon bg-secondary m-0 t-25"  tap="{{ add }}" />	
+				<Button text="{{ '0xea0b' | getIcon }}" class="icon bg-secondary m-0 t-25"  tap="{{ remove }}" />
+				<Label text="{{ item.qty }}" class="t-25 text-center p-y-5" flexGrow="1" />
+				<Button text="{{ item.discount+'%' }}" class="icon bg-secondary m-0 t-25" tap="{{ discountPrompt }}"  />
 			</FlexboxLayout>
-			<Button text="{{ '0xea10' | getIcon }}" class="icon -primary m-0 t-25"/>
+			<Button text="{{ '0xea10' | getIcon }}" class="icon bg-primary m-0 t-25" tap="{{ confirm }}" />
 		</StackLayout>
 	</FlexboxLayout>
 </Page>

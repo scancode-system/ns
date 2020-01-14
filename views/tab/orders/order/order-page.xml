@@ -1,41 +1,47 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		<FlexboxLayout  justifyContent="center"  visibility="{{ visible_loading }}" flexGrow="1">
-				<Label text="Carregando Pedido" class="t-12 m-r-20" alignSelf="center" />
-				<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-		<ScrollView flexGrow="1" visibility="{{ visible_loaded }}">
+		<ScrollView flexGrow="1" visibility="{{ visibility_page }}" class="t-18">
 			<StackLayout class="p-b-5">
 				<Label text="{{ 'Pedido #'+order.id }}" class="t-25 bg-light p-x-15 p-y-10" />
-
-				<Label text="Cliente" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.order_client.buyer ) ? order.order_client.client_id+'# '+order.order_client.buyer: 'Indefinido' }}" class="{{ (order.order_client.buyer ) ? 'icon bg-success m-0 t-18 m-x-10  p-l-15 text-left': 'icon bg-danger m-0 t-18 m-x-10  p-l-15 text-left' }}" tap="{{ gotoClient }}" />
-
-				<Label text="Pagamento" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.order_payment.payment_id ) ? order.order_payment.description: 'Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? 'icon  bg-success m-0 t-18 m-x-10  p-l-15 text-left' : 'icon  bg-danger m-0 t-18 m-x-10  p-l-15 text-left' }}" tap="{{ gotoPayment }}" />
-
-				<Label text="Observação" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.observation ) ? 'Obervação Registrada': 'Sem Observação' }}" class="icon bg-success m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoObservation }}" />
-
-				<Label text="Entrega" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.full_delivery ) ? 'Integral': 'Parcial' }}" class="icon bg-success m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoDelivery }}" />
-
-				<Label text="Transportadora" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? order.order_shipping_company.description: 'Indefinido' }}" class="icon bg-success m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoShippingCompany }}" />
-
-				<!--<Label text="Desconto" class="t-18 p-x-15 p-b-0 m-t-10" />
-				<Button text="Indefinido" class="icon -primary m-0 t-18 m-x-10  p-l-15 text-left" tap="{{ gotoDiscount }}" />-->
-
+				<FlexboxLayout justifyContent="center" class="m-x-15 m-t-15 border">
+					<FlexboxLayout flexGrow="1" class="border-right p-10">
+						<Label text="Total: " />
+						<Label text="{{ order.total | concurrency }}" />	
+					</FlexboxLayout>
+					<FlexboxLayout flexGrow="1" class="p-10">
+						<Label text="Items: " />
+						<Label text="{{ order.items.length }}" />	
+					</FlexboxLayout>
+				</FlexboxLayout>
+				<Button text="{{ (order.order_client.buyer ) ? 'Comprador: '+order.order_client.buyer: 'Cliente Indefinido' }}" class="{{ (order.order_client.buyer ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left': '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoClient }}" />
+				<Button text="{{ (order.order_payment.payment_id ) ? 'Pagamento: '+order.order_payment.description: 'Pagamento Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left' : '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoPayment }}" />
+				<Button text="{{ (order.observation ) ? 'Observação: Registrada': 'Observação: Em branco' }}" class="-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left" tap="{{ gotoObservation }}" />
+				<Button text="{{ (order.full_delivery ) ? 'Entrega: Integral': 'Entrega: Parcial' }}" class="-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left" tap="{{ gotoDelivery }}" />
+				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? 'Transportadora: '+order.order_shipping_company.description: 'Transportadora: Indefinido' }}" class="-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left" tap="{{ gotoShippingCompany }}" />
+				<Button text="Aplicar Desconto" class="-outline-dark m-x-15 m-t-15 p-l-15 t-18" tap="{{ gotoDiscount }}" tap="{{ discountPrompt }}" />
 			</StackLayout>
 		</ScrollView>
-		<StackLayout class="bg-light p-x-10 border-top" flexShrink="0" visibility="{{ visible_loaded }}">
-			<FlexboxLayout justifyContent="center" class="p-y-5">
-				<Label text="Total: " class="t-18" />
-				<Label text="{{ order.total | concurrency }}" class="t-18" />
-			</FlexboxLayout>
+		<StackLayout class="bg-light p-x-15" flexShrink="0" visibility="{{ (order.status_id==1)?'visible':'collapsed' }}" androidElevation="12">
 			<FlexboxLayout>
-				<Button text="{{ '0xe90f' | getIcon }}" class="icon bg-primary m-0 t-25" flexGrow="1" tap="{{ camera }}"  />
-				<Button text="{{ '0xea10' | getIcon }}" class="icon -primary m-0 t-25" flexGrow="1"/>
+				<Button text="{{ '0xe9b8' | getIcon }}" class="icon bg-primary m-0 t-25" flexGrow="1" tap="{{ completedTap }}" />
+				<Button text="{{ '0xe930' | getIcon }}" class="icon bg-secondary m-0 t-25" flexGrow="1" tap="{{ reserveTap }}" />
+				<Button text="{{ '0xea0e' | getIcon }}" class="icon bg-danger m-0 t-25" flexGrow="1" tap="{{ cancelTap }}"  />				
+			</FlexboxLayout>	
+		</StackLayout>
+		<StackLayout class="bg-light p-x-15 border-top" flexShrink="0" visibility="{{ (order.status_id==2)?'visible':'collapsed' }}">
+			<FlexboxLayout>
+				<Button text="{{ '0xe954' | getIcon }}" class="icon bg-primary m-0 t-25" flexGrow="1" tap="{{ printTap }}"  />
+				<Button text="{{ '0xe967' | getIcon }}" class="icon bg-secondary m-0 t-25" flexGrow="1" tap="{{ homeTap }}"  />				
+			</FlexboxLayout>	
+		</StackLayout>
+		<StackLayout class="bg-light p-x-15 border-top" flexShrink="0" visibility="{{ (order.status_id!=2&&order.status_id!=1)?'visible':'collapsed' }}">
+			<FlexboxLayout>
+				<Button text="{{ '0xe967' | getIcon }}" class="icon bg-secondary m-0 t-25" flexGrow="1" tap="{{ homeTap }}"  />				
+				<Label text="{{ order.status.description }}" class="p-0 m-t-15 t-18 text-center" flexGrow="1" />
 			</FlexboxLayout>	
 		</StackLayout>
 	</FlexboxLayout>

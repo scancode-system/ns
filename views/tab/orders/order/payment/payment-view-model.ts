@@ -9,22 +9,37 @@ export class PaymentModel extends Observable {
 	public visible_loaded;
 	public visible_update_payment;
 
+	public order;
 	public payments: Array<object>;
 	public selected_payment_id;
+	public index;
 
 	constructor() {
 		super();
 		this.visible_loading = 'visible';
 		this.visible_loaded = 'collapsed';
 		this.visible_update_payment = 'collapsed';
+		this.order = JSON.parse(settings.getString('order'));
 	}
 
 	public loaded(args) {
+
 		axios.get(settings.getString("api")+'/payments/all', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				this.set('payments', result.data);
+				var payments = result.data;
+				payments.unshift({description: 'Selecione um Pagamento'});
+				this.set('payments', payments);
+
 				this.set('visible_loading', 'collapsed');
 				this.set('visible_loaded', 'visible');
+
+				var index = payments.findIndex(function(this, payment){
+					return payment.id == this.order.order_payment.payment_id;
+				}, this);
+
+				this.set('index', index);
+				console.log(index);
+
 			},
 			(error) => {
 				alert(error.response.data.message);
@@ -34,13 +49,24 @@ export class PaymentModel extends Observable {
 	public update(args) {
 		this.set('visible_update_payment', 'visible');
 		this.set('visible_loaded', 'collapsed');
+		var payment = this.selected_payment_id;
+		if(!payment){
+			payment = null;
+		}
 
-		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id, {payment_id: this.selected_payment_id}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+		console.log(settings.getString("api")+'/orders/'+this.order.id);
+		axios.put(settings.getString("api")+'/orders/'+this.order.id, {payment_id: payment}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				settings.setString('order', JSON.stringify(result.data));
 				Frame.getFrameById('orders-frame').goBack();
 			},
 			(error) => {
-				alert(error.response.data.message);
+				console.log(error.response);
+				if(error.response.status == 403){
+					alert(error.response.data);					
+				}
+				this.set('visible_update_payment', 'collapsed');
+				this.set('visible_loaded', 'visible');
 			});
 
 	}

@@ -53,6 +53,7 @@ export class ShippingCompanyModel extends Observable {
 		this.set('processing_message', 'Atualizando Transportadora');
 		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id, {shipping_company_id: id}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				settings.setString('order', JSON.stringify(result.data));
 				Frame.getFrameById('orders-frame').goBack();
 			},
 			(error) => {
@@ -63,9 +64,13 @@ export class ShippingCompanyModel extends Observable {
 					settings.remove('clients');
 					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else if(error.response.status == 403){
+					alert(error.response.data);					
 				} else {
 					alert('Chame o administrador do sistema');
 				}
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
 			});
 	}
 
@@ -85,7 +90,7 @@ export class ShippingCompanyModel extends Observable {
 					settings.remove('clients');
 					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
-				} else {
+				}else {
 					alert('Chame o administrador do sistema');
 				}
 			});

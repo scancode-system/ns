@@ -1,34 +1,69 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		<ListView items="{{ items }}" separatorColor="transparent" flexGrow="1" itemTap="{{ onItemTapItem }}">
-			<ListView.itemTemplate>
-				<StackLayout class="p-0">
-					<StackLayout orientation="horizontal" class="p-0 p-t-10">
-						<StackLayout class="m-x-10 p-0">
-							<Image src="https://placem.at/people?w=250" class="w-40 img-rounded" />
-							<Label text="{{ item_product.sku }}" class="p-0 m-0 m-y-5 text-center" />
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		
+		<FlexboxLayout flexDirection="column" visibility="{{ visibility_page }}" flexGrow="1" >
+
+
+			<FlexboxLayout  flexDirection="column"  alignSelf="center" flexGrow="1"  justifyContent="center" visibility="{{ (items)?'collapsed':'visible' }}"  >
+				<Label text="Pedido Não Selecinado" class="t-20"   />
+			</FlexboxLayout>
+
+			<FlexboxLayout flexDirection="column"  alignSelf="center" flexGrow="1"  justifyContent="center" visibility="{{ (items && items.length==0)?'visible':'collapsed' }}" >
+				<Label text="Sacola Vazia" class="t-20"    />
+			</FlexboxLayout>
+
+			<ListView items="{{ items }}" separatorColor="transparent"  itemTap="{{ onItemTapItem }}" flexGrow="1" visibility="{{ (items && items.length!=0)?'visible':'collapsed' }}" >
+				<ListView.itemTemplate>
+					<StackLayout class="p-0">
+						<StackLayout orientation="horizontal" class="m-x-15 p-0 p-t-10">
+							<StackLayout class="m-r-10 p-0">
+								<Image src="{{ item_product.image  | urlBefore }}" class="w-40 img-rounded" />
+								<Label text="{{ item_product.sku }}" class="p-0 m-0 m-y-5 text-center" />
+							</StackLayout>
+							<StackLayout class="p-0">
+								<Label text="{{ item_product.description }}"  class="t-16 p-0 p-b-5 w-100" />
+								<StackLayout orientation="horizontal" class="p-0">
+									<Label text="Preço Bruto:" class="p-0 w-50" />
+									<Label text="{{ price  | concurrency }}" class="p-0 w-50"/>
+								</StackLayout>
+								<StackLayout orientation="horizontal" class="p-0">
+									<Label text="Desconto:" class="p-0 w-50" />
+									<Label text="{{ discount_value | concurrency }}" class="p-0 w-50" />
+								</StackLayout>
+								<StackLayout orientation="horizontal" class="p-0">
+									<Label text="Acrescimo:" class="p-0 w-50" />
+									<Label text="{{ addition_value | concurrency }}" class="p-0 w-50" />
+								</StackLayout>
+								<StackLayout orientation="horizontal" class="p-0">
+									<Label text="Imposto:" class="p-0 w-50" />
+									<Label text="{{ tax_value  | concurrency }}" class="p-0 w-50" />
+								</StackLayout>
+								<StackLayout orientation="horizontal" class="p-0">
+									<Label text="Preço Final:" class="p-0 w-50" />
+									<Label text="{{ price_net  | concurrency }}" class="p-0 w-50" />
+								</StackLayout>
+							</StackLayout >
 						</StackLayout>
-						<StackLayout class="p-0 p-r-15">
-							<Label text="{{ item_product.description }}"  class="t-16 p-0 p-b-5 text-center w-100" />
-							<StackLayout orientation="horizontal" class="p-0">
-								<Label text="Preço Bruto:" class="p-0 w-50" />
-								<Label text="{{ price  | concurrency }}" class="p-0 w-50"/>
-							</StackLayout>
-							<StackLayout orientation="horizontal" class="p-0">
-								<Label text="Quantidade:" class="p-0 w-50" />
-								<Label text="{{ qty }}" class="p-0 w-50" />
-							</StackLayout>
-						</StackLayout >
+						<FlexboxLayout class="bg-info">
+							<FlexboxLayout flexGrow="1" class="m-l-15">
+								<Label text="Quantidade: " class="t-14 p-r-0" />
+								<Label text="{{ qty }}" class="t-12 p-l-0" />
+							</FlexboxLayout>
+							<FlexboxLayout flexGrow="1" justifyContent="flex-end" class="m-r-15" >
+								<Label text="Total: " class="t-14 p-r-0" />
+								<Label text="{{ total  | concurrency }}" class="t-12 p-l-0" />
+							</FlexboxLayout>
+						</FlexboxLayout>
 					</StackLayout>
-					<FlexboxLayout class="bg-info p-x-5">
-						<Label text="Sub-total: " class="t-14 p-r-0" />
-						<Label text="{{ total  | concurrency }}" class="t-12 p-l-0" />
-					</FlexboxLayout>
-				</StackLayout>
-			</ListView.itemTemplate>
-		</ListView>
-		<StackLayout flexShrink="0" class="bg-light border-top">
-			<Button text="{{ '0xe90f' | getIcon }}" class="icon -primary"  dock="bottom" flexShrink="0"/>
-		</StackLayout>
+				</ListView.itemTemplate>
+			</ListView>
+			<StackLayout flexShrink="0" class="bg-light" visibility="{{ (items)?'visible':'collapsed' }}"  androidElevation="12">
+				<Button text="{{ '0xe90f' | getIcon }}" class="icon bg-info t-25"  dock="bottom" flexShrink="0" tap="{{ camera }}"/>
+			</StackLayout>
+		</FlexboxLayout>
 	</FlexboxLayout>
 </Page>

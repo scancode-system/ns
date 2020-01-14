@@ -1,22 +1,30 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
-		<ListView items="{{ orders }}" class="p-10">
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		<Label text="{{ 'Representante: '+saller.name }}" class="p-x-15 p-y-10 bg-info t-14" flexShrink="0" visibility="{{ visibility_page }}"  />
+		<ListView items="{{ orders }}" flexGrow="1" visibility="{{ visibility_page }}" itemTap="{{ selectOrder }}" >
 			<ListView.itemTemplate>
-				<StackLayout class="-separator">
-					<DockLayout stretchLastChild="false">
-						<Label text="{{ '#'+id }}" dock="left"  dock="right" />
-						<Label text="{{ order_client.corporate_name }}" class="p-r-20" dock="left" />
-					</DockLayout>
-					<DockLayout stretchLastChild="false">
-						<Label text="{{ order_client.cpf_cnpj }}" dock="left" />
-						<Label text="{{ historicoItems(status_id) }}" dock="right"  class="{{ 'text-'+historicoBg(status_id) }}"/>
-					</DockLayout>					
-				</StackLayout>
+				<StackLayout class="m-x-15">
+					<FlexboxLayout>
+						<Label text="{{ 'Pedido: #'+id }}" flexGrow="1" />
+						<Label text="{{ total | concurrency }}" class="text-right" flexGrow="1" />
+					</FlexboxLayout>
+					<FlexboxLayout>
+						<Label text="{{ (order_client.corporate_name)?order_client.corporate_name: (order_client.cpf_cnpj?order_client.cpf_cnpj:'Cliente não selecionado')  }}" flexGrow="1" />
+						<Label text="{{ historicoItems(status_id) }}"  class="{{ 'text-right text-'+historicoBg(status_id) }}" flexShrink="0"  />
+					</FlexboxLayout>
+				</StackLayout>>
 			</ListView.itemTemplate>
 		</ListView>
-		<StackLayout orientation="horizontal" class="bg-info p-x-10 p-y-5" flexShrink="0">
-			<Label text="Total: " class="text-center t-20" />
-			<Label text="{{ total | concurrency }}" class="text-center t-20" />
-		</StackLayout>
+		<FlexboxLayout flexDirection="column" class="t-16 p-x-15 p-y-10 bg-info" visibility="{{ visibility_page }}" flexShrink="0">
+			<Label text="{{ 'Pedidos Concluidos: '+orders_count }}" class="" flexShrink="0"  />
+			<FlexboxLayout>
+				<Label text="Total: "/>
+				<Label text="{{ total | concurrency }}" />
+			</FlexboxLayout>
+		</FlexboxLayout>
 	</FlexboxLayout>
 </Page>

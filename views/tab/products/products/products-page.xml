@@ -1,13 +1,17 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<ListView items="{{ products }}" itemTap="{{ gotoProduct }}">
 		<ListView.itemTemplate>
-			<StackLayout class="-separator p-y-12">
-				<FlexboxLayout>
-					<Label text="{{ description }}" flexGrow="1" class="p-t-0 t-14" />
-					<Label text="{{ price | concurrency }}" class="p-t-0 t-14" flexShrink="0" />
+			<FlexboxLayout class="-separator p-x-15">
+				<Image src="{{ image  | urlBefore }}" class="m-r-10 w-25" flexShrink="0" />
+				<FlexboxLayout flexDirection="column" justifyContent="center">
+					<Label text="{{ description }}"  class="m-0 p-0 t-14" />
+					<Label text="{{ sku }}" flexGrow="1" class="m-0 p-0 t-10" />
+					<FlexboxLayout justifyContent="flex-start">
+						<Label text="Preço: " class="m-0 p-0 t-14"   />
+						<Label text="{{ price | concurrency }}" class="m-0 p-0 t-14" />
+					</FlexboxLayout>
 				</FlexboxLayout>
-				<Label text="{{ sku }}" class="t-10 p-y-0" />
-			</StackLayout>
+			</FlexboxLayout>
 		</ListView.itemTemplate>
 	</ListView>
 </Page>

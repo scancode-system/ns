@@ -62,10 +62,10 @@ export class ClientShowModel extends Observable {
 			this.set('buyer', buyer);
 		}
 		if(!this.email){
-			this.set('email', buyer);
+			this.set('email', email);
 		}
 		if(!this.phone){
-			this.set('phone', buyer);
+			this.set('phone', phone);
 		}
 	}
 
@@ -85,18 +85,23 @@ export class ClientShowModel extends Observable {
 					settings.remove('clients');
 					settings.remove('shipping_companies');
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
-				} else {
+				}else if(error.response.status == 403){
+					alert(error.response.data);					
+				}else {
+					console.log(error);
+					console.log(error.response);
 					alert('Chame o administrador do sistema');
 				}
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
 			});
 	}
 
 	public updateBuyer(){
-		//console.log(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id+'/buyer');
 		this.set('processing_message', 'Atualizando Comprador');
-		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id+'/buyer', {buyer: this.buyer, email: this.email, phone: this.phone}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id+'/updateBuyer', {buyer: this.buyer, email: this.email, phone: this.phone}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-
+				settings.setString('order', JSON.stringify(result.data));
 				Frame.getFrameById('orders-frame').goBack();
 			},
 			(error) => {

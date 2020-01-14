@@ -1,5 +1,6 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" navigatedFrom="onNavigatedFrom" loaded="{{ loaded }}">
-	<ActionBar title="teste" class=" p-x-15">
+	<ActionBar title="Scancode"  class=" p-x-15">
+
 		<ActionItem icon="font://&#xe967;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_back_tab }}" visibility="{{ visibility_products }}" />
 		<ActionItem icon="font://&#xe986;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_search }}" visibility="{{ visibility_tab }}" />
 		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_refresh }}" />
@@ -11,7 +12,7 @@
 		</FlexboxLayout>
 		<TabView id="tab-view" tabBackgroundColor="white" androidOffscreenTabLimit="0" visibility="{{ visibility_tab }}">
 			<TabViewItem title="Pedidos" iconSource="">
-				<Frame defaultPage="views/tab/orders/orders-page" id="orders-frame" />
+				<Frame defaultPage="{{ orders_frame }}" id="orders-frame" />
 			</TabViewItem>
 			<TabViewItem title="Sacola" iconSource="">
 				<Frame defaultPage="views/tab/bag/bag-page" id="bag-frame" />
@@ -31,6 +32,6 @@
 				</ListView.itemTemplate>
 			</ListView>	
 		</FlexboxLayout>
-		<TextView  id="scan" text="{{ scan }}"  class="p-0 m-0" focus="{{ focusColetor }}" width="1"/>
+		<TextView  id="text-view-scan" text="{{ scan }}"  class="p-0 m-0" focus="{{ scanFocus }}" width="1"/>
 	</FlexboxLayout>
 </Page>

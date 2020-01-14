@@ -4,78 +4,26 @@ import axios from "axios";
 import * as settings from "tns-core-modules/application-settings";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 import { TabView } from "tns-core-modules/ui/tab-view";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 export class OrderModel extends Observable {
 
 	public order;
 
-	public visible_loading;
-	public visible_loaded;
+	public visibility_processing;
+	public visibility_page;
+	public processing_message;
 
 	constructor(id) {
 		super();
-		this.visible_loading = 'visible';
-		this.visible_loaded = 'collapsed';
-
-		settings.setString('order', JSON.stringify({id:id}));
 	}
 
-	public loaded(args) {
-		var order = JSON.parse(settings.getString('order'));
-		axios.get(settings.getString("api")+'/orders/'+order.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
-			(result) => {
-				settings.setString('order', JSON.stringify(result.data));
-				this.set('order', result.data);
-				this.set('visible_loading', 'collapsed');
-				this.set('visible_loaded', 'visible');
-			},
-			(error) => {
-				alert(error.response.data.message);
-			});
+	public loaded(args = null) {
+		this.set('visibility_processing', 'collapsed');
+		this.set('visibility_page', 'visible');
+		this.set('order', JSON.parse(settings.getString('order')));
 	}
 
-	public camera(args){
-		let barcodescanner = new BarcodeScanner();
-
-		barcodescanner.scan({
-			formats: "QR_CODE, EAN_13,CODE_128",
-			showFlipCameraButton: true,
-			preferFrontCamera: false,
-			showTorchButton: true,
-			beepOnScan: true,
-			torchOn: false,
-			resultDisplayDuration: 0,
-			openSettingsIfPermissionWasPreviouslyDenied: true
-		}).then((result) => {
-			var that = this;
-			setTimeout(function(){ that.search(result.text); }, 100);
-		}, (errorMessage) => {
-			alert('Erro scanning');
-		});
-	}
-
-	public search(search){
-		var products = JSON.parse(settings.getString('products', '[]'));
-		var product = products.find(
-			(product) => {
-				var located = false;
-				if(product.barcode == search){
-					located = true;
-				}
-				if(product.sku == search){
-					located = true;
-				}
-				return located;
-			});
-		if(product) {
-			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: product.id,  backstackVisible: false});
-			var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
-			tab_view.selectedIndex = 2;
-
-		} else {
-			alert('Produto não encontrado, sincronize os dados clicando no botão superior direito, na barra de títulos.');
-		}
-	}		
 
 	public gotoClient(){
 		var order_client = this.order.order_client;
@@ -103,6 +51,175 @@ export class OrderModel extends Observable {
 		Frame.getFrameById('orders-frame').navigate("views/tab/orders/order/shipping-company/shipping-company-page");
 	}
 
+	public discountPrompt(){
+		dialogs.prompt({
+			title: "Desconto",
+			message: "O desconto será atribuído a cada item no pedido. Lembrando que alguns items pode ter limitação na porcentagem de desconto.",
+			okButtonText: "Confirmar",
+			cancelButtonText: "Cancelar",
+			defaultText: "",
+			inputType: dialogs.inputType.number
+		}).then(
+		(result) => {
+			if(result.result && result.text != ''){
+				this.set('visibility_processing', 'visible');
+				this.set('visibility_page', 'collapsed');
+				this.set('processing_message', 'Aplicando desconto');
+
+				axios.put(settings.getString("api")+'/orders/'+this.order.id+'/updateDiscount', {discount: result.text}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+					(result) => {
+						settings.setString('order', JSON.stringify(result.data));
+						this.loaded();
+					},
+					(error) => {
+						if(error.response.status == 401)
+						{
+							settings.remove('saller');
+							settings.remove('products');
+							settings.remove('clients');
+							settings.remove('shipping_companies');
+							Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+						} else if(error.response.status == 422) {
+							var errors = Object.keys(error.response.data.errors);
+							alert(error.response.data.errors[errors[0]][0]);
+						} else if(error.response.status == 403){
+							alert(error.response.data);					
+						} else {
+							alert('Chame o administrador do sistema');
+							alert(error.response.data.message);
+						}
+						this.loaded();
+					});
+			}
+		});
+	}
+
+	public completedTap(args){
+		dialogs.confirm("Deseja concluir o pedido?").then(function (result) {
+			if(result){
+				this.completed();
+			}
+		}.bind(this));
+	}
+
+	public completed(args){
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Concluindo Pedido');
+
+		axios.put(settings.getString("api")+'/orders/'+this.order.id, {status_id: 2}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				alert('Pedido Concluído');
+				Frame.getFrameById("orders-frame").navigate({moduleName: "views/tab/orders/orders-page", clearHistory: true});
+			},
+			(error) => {
+				if(error.response.status == 401)
+				{
+					settings.remove('saller');
+					settings.remove('products');
+					settings.remove('clients');
+					settings.remove('shipping_companies');
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else {
+					this.set('visibility_processing', 'collapsed');
+					this.set('visibility_page', 'visible');
+					alert(error.response.data.message);
+				}
+			});
+	}
+
+	public reserveTap(args){
+		dialogs.confirm("Deseja resevar o pedido?").then(function (result) {
+			if(result){
+				this.reserve();
+			}
+		}.bind(this));
+	}
+
+	public reserve(args){
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Reservando Pedido');
+
+		axios.put(settings.getString("api")+'/orders/'+this.order.id, {status_id: 4}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				Frame.getFrameById("orders-frame").navigate({moduleName: "views/tab/orders/orders-page", clearHistory: true});
+			},
+			(error) => {
+				if(error.response.status == 401)
+				{
+					settings.remove('saller');
+					settings.remove('products');
+					settings.remove('clients');
+					settings.remove('shipping_companies');
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else {
+					alert('Chame o administrador do sistema');
+					alert(error.response.data.message);
+				}
+			});
+	}
+
+	public cancelTap(args){
+		dialogs.confirm("Deseja cancelar o pedido?").then(function (result) {
+			if(result){
+				this.cancel();
+			}
+		}.bind(this));
+	}
 
 
+	public cancel(){
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Cancelando Pedido');
+
+		axios.put(settings.getString("api")+'/orders/'+this.order.id, {status_id: 3}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				Frame.getFrameById("orders-frame").navigate({moduleName: "views/tab/orders/orders-page", clearHistory: true});
+			},
+			(error) => {
+				if(error.response.status == 401)
+				{
+					settings.remove('saller');
+					settings.remove('products');
+					settings.remove('clients');
+					settings.remove('shipping_companies');
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else {
+					alert('Chame o administrador do sistema');
+					alert(error.response.data.message);
+				}
+			});
+	}
+
+	public printTap(args){
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Solicitando impressão');
+
+		axios.get(settings.getString("api")+'/print_auto/'+this.order.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				alert('Impressão Solicitada');
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
+			},
+			(error) => {
+				if(error.response.status == 401)
+				{
+					settings.remove('saller');
+					settings.remove('products');
+					settings.remove('clients');
+					settings.remove('shipping_companies');
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else {
+					alert('Chame o administrador do sistema');
+					alert(error.response.data.message);
+				}
+			});
+	}
+
+	public homeTap(args){
+		Frame.getFrameById("orders-frame").navigate({moduleName: "views/tab/orders/orders-page", clearHistory: true});
+	}
 }

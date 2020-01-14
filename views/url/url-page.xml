@@ -1,0 +1,11 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo">
+	<ActionBar title="Configuração de URL" icon=""></ActionBar>
+	<FlexboxLayout flexDirection="column" class="m-t-30">
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		<TextField text="{{ url }}" hint="Url" class="-border t-14" visibility="{{ visibility_page }}" />
+		<Button text="{{ '0xea10' | getIcon }}" class="icon -primary m-t-10 t-25 " tap="{{ check }}" visibility="{{ visibility_page }}" />
+	</FlexboxLayout>
+</Page>

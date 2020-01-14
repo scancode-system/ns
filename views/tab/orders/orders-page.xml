@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column" class="p-y-10" flexGrow="1" >
 		<FlexboxLayout  justifyContent="center"  visibility="{{ loading }}" flexGrow="1">
 			<Label text="Registrando Novo Pedido" class="t-12 m-r-20" alignSelf="center" />

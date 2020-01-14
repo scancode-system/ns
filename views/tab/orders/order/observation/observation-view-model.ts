@@ -26,10 +26,17 @@ export class ObservationModel extends Observable {
 
 		axios.put(settings.getString("api")+'/orders/'+JSON.parse(settings.getString('order')).id, {observation: this.observation}, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				settings.setString('order', JSON.stringify(result.data));
 				Frame.getFrameById('orders-frame').goBack();
 			},
 			(error) => {
-				alert(error.response.data.message);
+				this.set('visible_update_observation', 'collapsed');
+				this.set('visible_loaded', 'visible');
+				if(error.response.status == 403){
+					alert(error.response.data);					
+				} else {
+					alert(error.response.data.message);
+				}
 			});
 
 		//Frame.getFrameById('orders-frame').navigate("views/tab/orders/historic/historic-page");
