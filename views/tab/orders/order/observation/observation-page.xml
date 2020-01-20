@@ -5,7 +5,7 @@
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
 		<TextView class="-border p-15 m-y-10 t-16" text="{{ observation }}" flexGrow="1" visibility="{{ visible_loaded }}" />
-		<StackLayout flexShrink="0" class="bg-light border-top" visibility="{{ visible_loaded }}">
+		<StackLayout flexShrink="0" class="bg-light" visibility="{{ visible_loaded }}" androidElevation="12">
 			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary" tap="{{ update }}" />
 		</StackLayout>
 	</FlexboxLayout>

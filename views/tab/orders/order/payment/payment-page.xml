@@ -9,7 +9,7 @@
 				<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
 		<ListPicker items="{{ payments }}" textField="description" valueField="id" selectedIndex="{{ index }}" selectedValue="{{ selected_payment_id }}" class="border border-radius-lg m-y-20 m-x-15" flexGrow="1" visibility="{{ visible_loaded }}"></ListPicker>
-		<StackLayout flexShrink="0" class="bg-light border-top" visibility="{{ visible_loaded }}">
+		<StackLayout flexShrink="0" class="bg-light" visibility="{{ visible_loaded }}" androidElevation="12">
 			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary" tap="{{ update }}" />
 		</StackLayout>
 	</FlexboxLayout>

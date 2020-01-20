@@ -12,7 +12,7 @@
 				</StackLayout>
 			</ListView.itemTemplate>
 		</ListView>
-		<StackLayout flexShrink="0" class="bg-light border-top" visibility="{{ visibility_page }}">
+		<StackLayout flexShrink="0" class="bg-light" visibility="{{ visibility_page }}" androidElevation="12">
 			<TextField text="{{ name }}" hint="Nova Transportadora" class="-border m-x-15 m-b-0 t-14" />
 			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary" tap="{{ store }}" />
 		</StackLayout>

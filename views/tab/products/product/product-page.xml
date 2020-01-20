@@ -67,8 +67,10 @@
 						</ListView.itemTemplate>
 					</ListView>
 				</FlexboxLayout>
-				<ListPicker items="{{ product.family }}"  textField="family_alias" valueField="id" selectedIndex="{{ index_product_family }}" selectedValue="{{ selected__product_family_id }}" class="m-x-15 m-t-15 border border-radius-md"  visibility="{{ (product.family.length>1)?'visible':'collapsed' }}" />
-				<Button text="Selecionar Variação" class="bg-primary m-0 m-x-15 t-14" tap="{{ selectProductTap }}" visibility="{{ (product.family.length>1)?'visible':'collapsed' }}" />
+
+				<ListPicker items="{{ product.family }}"  textField="family_alias" valueField="id" selectedIndex="{{ index_product_family }}" selectedValue="{{ selected__product_family_id }}" class="m-x-15 m-t-20 border border-radius-md"  visibility="{{ (product.family.length>1)?'visible':'collapsed' }}" />
+				<Button text="Selecionar Variação" class="bg-primary m-y-10 m-x-15 t-14" tap="{{ selectProductTap }}" visibility="{{ (product.family.length>1)?'visible':'collapsed' }}" />
+
 			</StackLayout>
 		</ScrollView>
 		<StackLayout class="p-x-15 bg-light" visibility="{{ ready }}" visibility="{{ visibility_edit_item }}" flexShrink="0" androidElevation="12">

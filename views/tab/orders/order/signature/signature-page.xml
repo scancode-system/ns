@@ -1,8 +1,12 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" xmlns:DrawingPad="nativescript-drawingpad" actionBarHidden="true" navigatingTo="navigatingTo"  navigatingFrom="navigatingFrom" loaded="{{ loaded }}">
 	<FlexboxLayout flexDirection="column">
 		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
 			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
+		<DrawingPad:DrawingPad penColor="#000000" penWidth="3" class="border-b m-15 border" id="assinatura" visibility="{{ visibility_page }}" />
+		<StackLayout flexShrink="0" class="bg-light" visibility="{{ visible_loaded }}" androidElevation="12" visibility="{{ visibility_page }}">
+			<Button text="{{ '0xe962' | getIcon }}" class="icon -primary" tap="{{ update }}" />
+		</StackLayout>
 	</FlexboxLayout>
 </Page>
