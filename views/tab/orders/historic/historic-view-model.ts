@@ -37,8 +37,6 @@ export class HistoricModel extends Observable {
 					}
 				}
 
-				console.log(orders_count)
-				;
 				this.set('total', total);
 				this.set('orders_count', orders_count);
 				this.set('visibility_processing', 'collapsed');

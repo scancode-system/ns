@@ -9,7 +9,7 @@
 				<StackLayout class="p-x-15 p-t-15">
 					<Image src="{{ url+product.image }}" class="w-100 img-rounded" />
 				</StackLayout>
-				<StackLayout class="p-y-8">
+				<StackLayout class="p-y-8 p-x-15">
 					<Label text="{{ product.description }}" class="t-18 p-y-0 text-center" />
 					<Label text="{{ product.sku }}" class="t-10 text-secondary p-y-0 text-center"/>
 				</StackLayout>
@@ -80,6 +80,7 @@
 				<Label text="{{ item.qty }}" class="t-25 text-center p-y-5" flexGrow="1" />
 				<Button text="{{ item.discount+'%' }}" class="icon bg-secondary m-0 t-25" tap="{{ discountPrompt }}"  />
 			</FlexboxLayout>
+			<TextField text="{{ observation }}" hint="Observação do Item" class="-border m-x-0 m-b-5 t-14" />
 			<Button text="{{ '0xea10' | getIcon }}" class="icon bg-primary m-0 t-25" tap="{{ confirm }}" />
 		</StackLayout>
 	</FlexboxLayout>

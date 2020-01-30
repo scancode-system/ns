@@ -14,10 +14,6 @@ export class DeliveryModel extends Observable {
 		this.visible_update_full_delivery = 'collapsed';
 	}
 
-	public loaded(args) {
-		console.log('loaded orders');
-	}
-
 	public updateOne(){
 		this.update(1);
 	}

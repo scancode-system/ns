@@ -38,8 +38,6 @@ export class PaymentModel extends Observable {
 				}, this);
 
 				this.set('index', index);
-				console.log(index);
-
 			},
 			(error) => {
 				alert(error.response.data.message);

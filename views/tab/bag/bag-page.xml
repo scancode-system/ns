@@ -1,4 +1,4 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}" id="bag-page">
 	<FlexboxLayout flexDirection="column">
 		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
 			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
@@ -54,7 +54,7 @@
 								</StackLayout>
 							</StackLayout >
 						</StackLayout>
-						<FlexboxLayout class="bg-info">
+						<FlexboxLayout class="bg-primary">
 							<FlexboxLayout flexGrow="1" class="m-l-15">
 								<Label text="Quantidade: " class="t-14 p-r-0" />
 								<Label text="{{ qty }}" class="t-12 p-l-0" />

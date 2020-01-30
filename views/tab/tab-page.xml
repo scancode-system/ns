@@ -1,24 +1,24 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" navigatingTo="navigatingTo" navigatedFrom="onNavigatedFrom" loaded="{{ loaded }}">
 	<ActionBar title="Scancode"  class=" p-x-15">
 
-		<ActionItem icon="font://&#xe967;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_back_tab }}" visibility="{{ visibility_products }}" />
-		<ActionItem icon="font://&#xe986;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_search }}" visibility="{{ visibility_tab }}" />
-		<ActionItem icon="font://&#xea2e;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ action_refresh }}" />
-		<ActionItem icon="font://&#xe938;" class="fas icon bg-warning p-x-10 m-x-10 text-info" ios.position="right" tap="{{ actionScanFocus }}" />
+		<ActionItem icon="font://&#xe967;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ action_back_tab }}" visibility="{{ visibility_products }}" />
+		<ActionItem icon="font://&#xe986;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ action_search }}" visibility="{{ visibility_tab }}" />
+		<ActionItem icon="font://&#xea2e;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ action_refresh }}" />
+		<ActionItem icon="font://&#xe938;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ actionScanFocus }}" />
 	</ActionBar>
 	<FlexboxLayout>
 		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing_tab }}" flexGrow="1">
 			<Label text="{{ processing_message_tab }}" class="t-12 m-r-20" alignSelf="center" />
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-		<TabView id="tab-view" tabBackgroundColor="white" androidOffscreenTabLimit="0" visibility="{{ visibility_tab }}">
-			<TabViewItem title="Pedidos" iconSource="">
+		<TabView id="tab-view" tabBackgroundColor="white"  visibility="{{ visibility_tab }}" selectedIndexChanged="{{ selectedIndexChanged }}" androidTabsPosition="bottom" tabTextColor="#A0A0A0" selectedTabTextColor="#20a8d8">
+			<TabViewItem title="Pedidos" iconSource="{{ icon_orders }}">
 				<Frame defaultPage="{{ orders_frame }}" id="orders-frame" />
 			</TabViewItem>
-			<TabViewItem title="Sacola" iconSource="">
+			<TabViewItem title="Sacola" iconSource="{{ icon_bag }}">
 				<Frame defaultPage="views/tab/bag/bag-page" id="bag-frame" />
 			</TabViewItem>
-			<TabViewItem title="Produtos" iconSource="">
+			<TabViewItem title="Produtos" iconSource="{{ icon_products }}">
 				<Frame defaultPage="views/tab/products/product_categories/product_categories-page" id="products-frame" />
 			</TabViewItem>
 		</TabView>

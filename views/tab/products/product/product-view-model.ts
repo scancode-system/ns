@@ -12,6 +12,7 @@ export class ProductModel extends Observable {
 
 	public product; 
 	public item;
+	public observation;
 
 	public id: number;
 	public url;
@@ -31,7 +32,6 @@ export class ProductModel extends Observable {
 	}
 
 	public loaded(args) {
-		//this.loadItem();
 		this.set('visibility_processing', 'visible');
 		this.set('visibility_page', 'collapsed');
 		this.set('visibility_edit_item', 'collapsed');
@@ -39,7 +39,6 @@ export class ProductModel extends Observable {
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-
 				this.set('product', result.data);
 				this.loadItem(result.data.id);
 
@@ -74,9 +73,10 @@ export class ProductModel extends Observable {
 			});
 
 			if(item){
-				this.set('item', {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price});
+				this.set('item', {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price, observation: item.observation});
+				this.set('observation', item.observation);
 			} else {
-				this.set('item', {id: null, order_id: order.id, product_id: this.id, qty:1, discount: 0, price: this.product.price});
+				this.set('item', {id: null, order_id: order.id, product_id: this.id, qty:1, discount: 0, price: this.product.price, observation: ''});
 			}
 		} else {
 			this.set('item', {order_id: null});
@@ -106,13 +106,16 @@ export class ProductModel extends Observable {
 	}
 
 	private updateQty(qty){
-		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (this.item.qty+qty), discount: this.item.discount, price: this.item.price});
+		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (this.item.qty+qty), discount: this.item.discount, price: this.item.price, observation: this.item.observation});
 	}
 
 	private updateDiscount(discount){
-		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: this.item.qty, discount: discount, price: this.item.price});
+		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: this.item.qty, discount: discount, price: this.item.price, observation: this.item.observation});
 	}
 
+	private updateObservation(observation){
+		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: this.item.qty, discount: this.item.discount, price: this.item.price, observation: observation});
+	}
 
 	public discountPrompt(){
 		dialogs.prompt({
@@ -142,6 +145,7 @@ export class ProductModel extends Observable {
 		this.set('visibility_page', 'collapsed');
 		this.set('visibility_edit_item', 'collapsed');
 		this.set('processing_message', 'Atualizando a Sacola');
+		this.updateObservation(this.observation);
 
 		if(this.item.id){
 			this.put();
@@ -152,7 +156,7 @@ export class ProductModel extends Observable {
 	}
 
 	public post(){
-		console.log(settings.getString("api")+'/items/'+this.item.order_id);
+		console.log(this.item);
 		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('order', JSON.stringify(result.data));

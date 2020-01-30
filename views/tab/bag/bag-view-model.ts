@@ -23,7 +23,7 @@ export class BagModel extends Observable {
 		this.visibility_page = 'visible';
 	}
 
-	public loaded(args) {
+	public loaded(args = null) {
 		var order = JSON.parse(settings.getString('order', null));
 		if(order){
 			this.set('items', order.items);
@@ -37,7 +37,6 @@ export class BagModel extends Observable {
 
 	public onItemTapItem(args){
 		dialogs.action("", "Cancelar", ["Remover Item", "Editar Item"]).then(result => {
-			console.log("Dialog result: " + result);
 			if(result == "Remover Item"){
 				this.remove(args.view.bindingContext.id);
 			}else if(result == "Editar Item"){
@@ -54,7 +53,6 @@ export class BagModel extends Observable {
 		this.set('processing_message', 'Removendo Item');
 		axios.delete(settings.getString("api")+'/items/'+id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				console.log(result.data);
 				settings.setString('order', JSON.stringify(result.data));
 				this.set('items', result.data.items);
 				this.set('visibility_processing', 'collapsed');
@@ -124,61 +122,4 @@ export class BagModel extends Observable {
 	}		
 
 
-
-
-
-
-
-
-
-
-	/*	public loaded(args) {
-		this.set('visibility_processing', 'collapsed');
-		this.set('visibility_page', 'visible');
-		var order = JSON.parse(settings.getString('order', null));
-		if(order){
-			this.set('items', order.items);
-
-			/*this.set('visibility_processing', 'visible');
-			this.set('visibility_page', 'collapsed');
-			this.set('processing_message', 'Carregando Items');*/
-
-			//var order = JSON.parse(settings.getString('order'));
-
-			/*axios.get(settings.getString("api")+'/orders/'+this.order.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
-				(result) => {
-					this.set('visibility_processing', 'collapsed');
-					this.set('visibility_page', 'visible');
-					this.set('items', result.data.items);
-				},
-				(error) => {
-					if(error.response.status == 401)
-					{
-						settings.remove('saller');
-						settings.remove('products');
-						settings.remove('clients');
-						settings.remove('shipping_companies');
-						Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
-					} else {
-						console.log(error.response);
-						alert(error.response.data.message);
-					}
-				});*/
-				//this.set('visibility_processing', 'collapsed');
-				//this.set('visibility_page', 'visible');
-			/*} else {
-				this.set('items', null);
-				//this.set('visibility_processing', 'collapsed');
-				//this.set('visibility_page', 'collapsed');
-			}
-
-
-
-/*		this.set('items', [
-			{item_product: {sku: 'CAC1023', description: 'BIKINI SUPER TOP'}, qty: 4, price: 23232, total: 3423423},
-			{item_product: {sku: 'CAC1023', description: 'BIKINI SUPER TOP'}, qty: 4, price: 23232, total: 3423423},
-			{item_product: {sku: 'CAC1023', description: 'BIKINI SUPER TOP'}, qty: 4, price: 23232, total: 3423423}
-			]);*/
-			/*}*/
-
-		}
+}

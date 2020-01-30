@@ -18,6 +18,10 @@ export class TabModel extends Observable {
 
 	public orders_frame;
 
+	public icon_orders: string;
+    public icon_sacola: string;
+    public icon_loja: string;
+
 	constructor() {
 		super();
 		this.visibility_processing_tab = 'collapsed';
@@ -42,6 +46,8 @@ export class TabModel extends Observable {
 				this.scannig();
 			}
 		}, this);
+
+		this.selectedTab(0);
 	}
 
 	public loaded(args){
@@ -51,6 +57,42 @@ export class TabModel extends Observable {
 			thisModel.scanFocus();
 		}, 500);
 	}
+
+	public selectedIndexChanged(args) {
+		this.selectedTab(args.newIndex);
+	}
+
+	private selectedTab(index){
+		this.refreshIcons();
+		switch(index){
+			case 0: this.set("icon_orders", "res://pedido2"); this.refreshOrderPage();  break;
+			case 1: this.set("icon_bag", "res://sacola2");  this.refreshBagPage(); break;
+			case 2: this.set("icon_products", "res://loja2"); break;
+		}   
+		//this.focusColetor();     
+	}  
+
+	private refreshIcons() {
+		this.set('icon_orders', 'res://pedido1');
+		this.set('icon_bag', 'res://sacola1');
+		this.set('icon_products', 'res://loja1');
+		//this.set('icon_mais', 'res://mais1');
+	}
+
+	private refreshBagPage(){
+		// tratar atualizar comente se old index estiver dentro dos padroes
+		let bag_page = Frame.getFrameById('root-frame').getViewById('bag-page');
+		bag_page.bindingContext.loaded();
+	}
+
+	private refreshOrderPage(){
+        // tratar atualizar comente se old index estiver dentro dos padroes
+        var order_page = Frame.getFrameById('root-frame').getViewById('order-page');
+        if(typeof order_page !== 'undefined'){
+            order_page.bindingContext.loaded();
+        }
+    }
+
 
 	public scanFocus(){
 		var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan'); 
@@ -67,7 +109,6 @@ export class TabModel extends Observable {
 			var search = txt.text;
 			txt.text = '';
 			search = search.replace(/(\r\n\t|\n|\r\t)/gm,"");
-			console.log(search);
 			this.searchProduct(search);
 		}
 	}
