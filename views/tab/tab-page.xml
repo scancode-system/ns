@@ -5,6 +5,7 @@
 		<ActionItem icon="font://&#xe986;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ action_search }}" visibility="{{ visibility_tab }}" />
 		<ActionItem icon="font://&#xea2e;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ action_refresh }}" />
 		<ActionItem icon="font://&#xe938;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ actionScanFocus }}" />
+		<ActionItem icon="font://&#xea13;" class="fas icon p-x-10 m-x-10 text-primary" ios.position="right" tap="{{ actionLogout }}" />
 	</ActionBar>
 	<FlexboxLayout>
 		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing_tab }}" flexGrow="1">

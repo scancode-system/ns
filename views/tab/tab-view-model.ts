@@ -4,6 +4,7 @@ import * as settings from "tns-core-modules/application-settings";
 import { Frame } from "tns-core-modules/ui/frame";
 import { TabView } from "tns-core-modules/ui/tab-view";
 import {TextView} from "tns-core-modules/ui/text-view";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 
 export class TabModel extends Observable {
@@ -19,8 +20,8 @@ export class TabModel extends Observable {
 	public orders_frame;
 
 	public icon_orders: string;
-    public icon_sacola: string;
-    public icon_loja: string;
+	public icon_sacola: string;
+	public icon_loja: string;
 
 	constructor() {
 		super();
@@ -86,12 +87,12 @@ export class TabModel extends Observable {
 	}
 
 	private refreshOrderPage(){
-        // tratar atualizar comente se old index estiver dentro dos padroes
-        var order_page = Frame.getFrameById('root-frame').getViewById('order-page');
-        if(typeof order_page !== 'undefined'){
-            order_page.bindingContext.loaded();
-        }
-    }
+		// tratar atualizar comente se old index estiver dentro dos padroes
+		var order_page = Frame.getFrameById('root-frame').getViewById('order-page');
+		if(typeof order_page !== 'undefined'){
+			order_page.bindingContext.loaded();
+		}
+	}
 
 
 	public scanFocus(){
@@ -163,6 +164,25 @@ export class TabModel extends Observable {
 		var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 		tab_view.selectedIndex = 2;
 		this.set('search', '');
+	}
+
+	public actionLogout(){
+		dialogs.confirm({
+			message: "Temcerteza que deseja fazer logout?",
+			okButtonText: "Sim",
+			cancelButtonText: "Não",
+			neutralButtonText: "Cancelar"
+		})
+		.then((result) => {
+			if(result){
+				settings.remove('saller');
+				settings.remove('products');
+				settings.remove('clients');
+				settings.remove('shipping_companies');
+				settings.remove('password');
+				Frame.getFrameById('root-frame').navigate({moduleName: "views/login/login-page", clearHistory: true});
+			}
+		});
 	}
 
 	public action_back_tab(){
@@ -238,9 +258,7 @@ export class TabModel extends Observable {
 		axios.get(settings.getString("api")+'/clients/load', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('clients', JSON.stringify(result.data));
-
-				this.set('visibility_processing_tab', 'collapsed');
-				this.set('visibility_tab', 'visible');
+				this.updateOrder();
 			},
 			(error) => {
 				if(error.response.status == 401)
@@ -254,6 +272,41 @@ export class TabModel extends Observable {
 					alert('Chame o administrador do sistema');
 				}
 			});
+	}
+
+	public updateOrder(){
+		var order = JSON.parse(settings.getString('order', null));
+
+		if(order){
+
+
+
+			this.set('processing_message_tab', 'Sincronizando Pedido');
+			axios.get(settings.getString("api")+'/orders/'+order.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+				(result) => {
+					settings.setString('order', JSON.stringify(result.data));
+					this.refreshOrderPage();  
+					this.refreshBagPage(); 
+
+					this.set('visibility_processing_tab', 'collapsed');
+					this.set('visibility_tab', 'visible');
+				},
+				(error) => {
+					if(error.response.status == 401)
+					{
+						settings.remove('saller');
+						settings.remove('products');
+						settings.remove('clients');
+						settings.remove('shipping_companies');
+						Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+					} else {
+						alert('Chame o administrador do sistema');
+					}
+				});
+		} else {
+			this.set('visibility_processing_tab', 'collapsed');
+			this.set('visibility_tab', 'visible');
+		}
 	}
 
 

@@ -45,6 +45,10 @@ function concurrency(value) {
 	return 'R$' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+function percentage(value) {
+	return '%' + value;
+}
+
 function getIcon(value){
 	return String.fromCharCode(value);
 }
@@ -53,7 +57,7 @@ function urlBefore(value){
 	return settings.getString('url', '')+'/'+value;
 }
 
-application.setResources( { getIcon, concurrency, historicoItems, historicoBg , urlBefore});
+application.setResources( { getIcon, concurrency, historicoItems, historicoBg , urlBefore, percentage});
 
 // colcoar aqui condicao para ver qual frame vai ser carregado
 

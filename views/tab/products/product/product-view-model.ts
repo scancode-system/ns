@@ -119,7 +119,8 @@ export class ProductModel extends Observable {
 
 	public discountPrompt(){
 		dialogs.prompt({
-			message: "Inserir desconto no item",
+			title: "Desconto - Item",
+			message: this.messageDiscountPrompt(),
 			okButtonText: "Confirmar",
 			cancelButtonText: "Cancelar",
 			defaultText: "",
@@ -135,8 +136,25 @@ export class ProductModel extends Observable {
 					utils.ad.dismissSoftInput();
 				}
 			}, 50);
-			this.updateDiscount(result.text);
+			
+			if(result.result){
+				if(result.text == ''){
+					this.updateDiscount(0);
+				} else {
+					this.updateDiscount(result.text);	
+				}
+			}
 		});
+	}
+
+	private messageDiscountPrompt(){
+		if(this.product.discount_limit == 100){
+			return '';
+		} else if(this.product.discount_limit == 0) {
+			return 'Atenção: Este produto está bloqueado para receber desconto.';
+		} else {
+			return 'Atenção: Este produto possui limitador de desconto.';
+		}
 	}
 
 

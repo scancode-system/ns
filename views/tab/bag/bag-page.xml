@@ -33,28 +33,32 @@
 							<StackLayout class="p-0">
 								<Label text="{{ item_product.description }}"  class="t-16 p-0 p-b-5 w-100" />
 								<StackLayout orientation="horizontal" class="p-0">
-									<Label text="Preço Bruto:" class="p-0 w-50" />
+									<Label text="Preç Brut:" class="p-0 w-33" />
 									<Label text="{{ price  | concurrency }}" class="p-0 w-50"/>
 								</StackLayout>
 								<StackLayout orientation="horizontal" class="p-0">
-									<Label text="Desconto:" class="p-0 w-50" />
-									<Label text="{{ discount_value | concurrency }}" class="p-0 w-50" />
+									<Label text="Desc:" class="p-0 w-33" />
+									<Label text="{{ discount | percentage }}" class="p-0" />
+									<Label text="-" class="p-0 m-x-5" />
+									<Label text="{{ discount_value | concurrency }}" class="p-0 w-33 t-10" />
 								</StackLayout>
 								<StackLayout orientation="horizontal" class="p-0">
-									<Label text="Acrescimo:" class="p-0 w-50" />
+									<Label text="Acres:" class="p-0 w-33" />
+									<Label text="{{ addition | percentage }}" class="p-0" />
+									<Label text="-" class="p-0 m-x-5" />
 									<Label text="{{ addition_value | concurrency }}" class="p-0 w-50" />
 								</StackLayout>
 								<StackLayout orientation="horizontal" class="p-0">
-									<Label text="Imposto:" class="p-0 w-50" />
+									<Label text="Imposto:" class="p-0 w-33" />
 									<Label text="{{ tax_value  | concurrency }}" class="p-0 w-50" />
 								</StackLayout>
 								<StackLayout orientation="horizontal" class="p-0">
-									<Label text="Preço Final:" class="p-0 w-50" />
+									<Label text="Preç Final:" class="p-0 w-33" />
 									<Label text="{{ price_net  | concurrency }}" class="p-0 w-50" />
 								</StackLayout>
 							</StackLayout >
 						</StackLayout>
-						<FlexboxLayout class="bg-primary">
+						<FlexboxLayout class="bg-primary p-y-5">
 							<FlexboxLayout flexGrow="1" class="m-l-15">
 								<Label text="Quantidade: " class="t-14 p-r-0" />
 								<Label text="{{ qty }}" class="t-12 p-l-0" />

@@ -17,7 +17,7 @@
 						<Label text="{{ order.items.length }}" />	
 					</FlexboxLayout>
 				</FlexboxLayout>
-				<Button text="{{ (order.order_client.buyer ) ? 'Comprador: '+order.order_client.buyer: 'Cliente: Indefinido' }}" class="{{ (order.order_client.buyer ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left': '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoClient }}" />
+				<Button text="{{ (order.order_client.buyer ) ? 'Comprador: '+order.order_client.buyer: 'Comprador: Indefinido' }}" class="{{ (order.order_client.client_id ) ? '-outline-success m-x-15 m-t-15 p-l-15 t-18 text-left': '-outline-danger m-x-15 m-t-15 p-l-15 t-18 text-left' }}" tap="{{ gotoClient }}" />
 				<Button text="{{ (order.order_payment.payment_id ) ? 'Pagamento: '+order.order_payment.description: 'Pagamento: Indefinido' }}" class="{{ (order.order_payment.payment_id ) ? '-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left' : '-outline-danger m-x-15 m-t-10 p-l-15 t-18 text-left' }}" tap="{{ gotoPayment }}" />
 				<Button text="{{ (order.full_delivery ) ? 'Entrega: Integral': 'Entrega: Parcial' }}" class="-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left" tap="{{ gotoDelivery }}" />
 				<Button text="{{ (order.observation ) ? 'Observação: Registrada': 'Observação: Em branco' }}" class="{{ (order.observation )?'-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left':'-outline-warning m-x-15 m-t-10 p-l-15 t-18 text-left' }}" tap="{{ gotoObservation }}" />
