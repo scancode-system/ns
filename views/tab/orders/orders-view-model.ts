@@ -38,13 +38,13 @@ export class OrdersModel extends Observable {
 			});
 	}
 
-	public logout(){
+	/*public logout(){
 		settings.remove('saller');
 		settings.remove('products');
 		settings.remove('clients');
 		settings.remove('shipping_companies');
 		settings.remove('password');
 		Frame.getFrameById('root-frame').navigate({moduleName: "views/login/login-page", clearHistory: true});
-	}
+	}*/
 
 }
