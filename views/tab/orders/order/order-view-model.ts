@@ -5,6 +5,7 @@ import * as settings from "tns-core-modules/application-settings";
 import { BarcodeScanner } from "nativescript-barcodescanner";
 import { TabView } from "tns-core-modules/ui/tab-view";
 import * as dialogs from "tns-core-modules/ui/dialogs";
+import {TextView} from "tns-core-modules/ui/text-view";
 
 export class OrderModel extends Observable {
 
@@ -22,8 +23,20 @@ export class OrderModel extends Observable {
 		this.set('visibility_processing', 'collapsed');
 		this.set('visibility_page', 'visible');
 		this.set('order', JSON.parse(settings.getString('order')));
+		this.focusScan();
+		//console.log('affs');
 	}
 
+
+	public focusScan(){
+		var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan'); 
+		if(txt){
+			txt.focus();
+			txt.dismissSoftInput();
+			//this.scanning = false;
+			txt.text = '';
+		}
+	}
 
 	public gotoClient(){
 		var order_client = this.order.order_client;

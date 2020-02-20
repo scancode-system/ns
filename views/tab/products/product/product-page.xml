@@ -75,8 +75,8 @@
 		</ScrollView>
 		<StackLayout class="p-x-15 bg-light" visibility="{{ ready }}" visibility="{{ visibility_edit_item }}" flexShrink="0" androidElevation="12">
 			<FlexboxLayout>
-				<Button text="{{ '0xea0a' | getIcon }}" class="icon bg-secondary m-0 t-25"  tap="{{ add }}" />	
-				<Button text="{{ '0xea0b' | getIcon }}" class="icon bg-secondary m-0 t-25"  tap="{{ remove }}" />
+				<Button text="{{ '0xea0a' | getIcon }}" class="icon bg-secondary m-0 t-25"  tap="{{ add }}" longPress="{{ qtyPrompt }}" />	
+				<Button text="{{ '0xea0b' | getIcon }}" class="icon bg-secondary m-0 t-25"  tap="{{ remove }}" longPress="{{ qtyPrompt }}" />
 				<Label text="{{ item.qty }}" class="t-25 text-center p-y-5" flexGrow="1" />
 				<Button text="{{ item.discount+'%' }}" class="icon bg-secondary m-0 t-25" tap="{{ discountPrompt }}"  />
 			</FlexboxLayout>

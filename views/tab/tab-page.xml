@@ -12,7 +12,7 @@
 			<Label text="{{ processing_message_tab }}" class="t-12 m-r-20" alignSelf="center" />
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-		<TabView id="tab-view" tabBackgroundColor="white"  visibility="{{ visibility_tab }}" selectedIndexChanged="{{ selectedIndexChanged }}" androidTabsPosition="bottom" tabTextColor="#A0A0A0" selectedTabTextColor="#20a8d8">
+		<TabView id="tab-view" tabBackgroundColor="white"  visibility="{{ visibility_tab }}" selectedIndexChanged="{{ selectedIndexChanged }}" selectedIndex="{{ tabSelectedIndex }}" androidTabsPosition="bottom" tabTextColor="#A0A0A0" selectedTabTextColor="#20a8d8">
 			<TabViewItem title="Pedidos" iconSource="{{ icon_orders }}">
 				<Frame defaultPage="{{ orders_frame }}" id="orders-frame" />
 			</TabViewItem>
@@ -35,5 +35,11 @@
 			</ListView>	
 		</FlexboxLayout>
 		<TextView  id="text-view-scan" text="{{ scan }}"  class="p-0 m-0" focus="{{ scanFocus }}" width="100" width="1"/>
+
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_scanning }}" flexGrow="1">
+			<Label text="Pesquisando Produto" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+	
 	</FlexboxLayout>
 </Page>

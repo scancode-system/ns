@@ -18,30 +18,37 @@ export class LoginModel extends Observable {
 		this.email =  settings.getString('username');
 		this.password =  '';
 
-		settings.remove('order');
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Verificando Credenciais');
+
+		/*settings.remove('order');
 		settings.remove('saller');
 		settings.remove('products');
 		settings.remove('clients');
-		settings.remove('shipping_companies');		
+		settings.remove('shipping_companies');*/		
 	}
 
 	public loaded(){
-
-		this.set('visibility_processing', 'visible');
-		this.set('visibility_page', 'collapsed');
-		this.set('processing_message', 'Checando conexão');
-		axios.get(settings.getString("api")+'/dashboard/check').then(
-			(result) => {
-				if(result.status == 200){
-					this.set('visibility_processing', 'collapsed');
-					this.set('visibility_page', 'visible');
-				} else {
+		if(settings.getString('saller' , null)){
+			Frame.getFrameById("root-frame").navigate({moduleName: "views/tab/tab-page", clearHistory: true});
+		} else {
+			this.set('visibility_processing', 'visible');
+			this.set('visibility_page', 'collapsed');
+			this.set('processing_message', 'Checando conexão');
+			axios.get(settings.getString("api")+'/dashboard/check').then(
+				(result) => {
+					if(result.status == 200){
+						this.set('visibility_processing', 'collapsed');
+						this.set('visibility_page', 'visible');
+					} else {
+						Frame.getFrameById("root-frame").navigate({moduleName: "views/url/url-page", clearHistory: true});
+					}
+				},
+				(error) => {
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/url/url-page", clearHistory: true});
-				}
-			},
-			(error) => {
-				Frame.getFrameById("root-frame").navigate({moduleName: "views/url/url-page", clearHistory: true});
-			});
+				});
+		}
 	}
 
 	public login() {

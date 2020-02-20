@@ -4,7 +4,7 @@
 			<Label text="Registrando Novo Pedido" class="t-12 m-r-20" alignSelf="center" />
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-		<Button text="ABRIR PEDIDO" class="-outline t-36 -rounded-sm"  tap="{{ gotoOrder }}" flexGrow="1" visibility="{{ content }}" />
+		<Button text="NOVO PEDIDO" class="-outline t-36 -rounded-sm"  tap="{{ gotoOrder }}" flexGrow="1" visibility="{{ content }}" />
 		<Button text="MEUS PEDIDOS" class="-outline t-36 -rounded-sm"  tap="{{ gotoHistoric }}" flexGrow="1"  visibility="{{ content }}" />
 	</FlexboxLayout>
 </Page>

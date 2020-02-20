@@ -5,7 +5,9 @@ import { Frame } from "tns-core-modules/ui/frame";
 import { TabView } from "tns-core-modules/ui/tab-view";
 import {TextView} from "tns-core-modules/ui/text-view";
 import * as dialogs from "tns-core-modules/ui/dialogs";
-
+import * as utils from "tns-core-modules/utils/utils";
+import { isIOS, isAndroid } from "tns-core-modules/platform";
+const Semaphore = require('ts-semaphore');
 
 export class TabModel extends Observable {
 
@@ -15,6 +17,8 @@ export class TabModel extends Observable {
 	public visibility_processing_tab;
 	public visibility_tab;
 	public visibility_products;
+	public visibility_scanning;
+
 	public processing_message_tab;
 
 	public orders_frame;
@@ -23,11 +27,16 @@ export class TabModel extends Observable {
 	public icon_sacola: string;
 	public icon_loja: string;
 
+	public limit;
+
 	constructor() {
 		super();
+
 		this.visibility_processing_tab = 'collapsed';
 		this.visibility_tab = 'visible';
 		this.visibility_products = 'collapsed';
+		this.visibility_scanning = 'collapsed';
+
 
 		//let order = JSON.parse(settings.getString('order'));
 		if(JSON.parse(settings.getString('order', null))){
@@ -44,11 +53,18 @@ export class TabModel extends Observable {
 
 		this.on(Observable.propertyChangeEvent, (propertyChangeData: PropertyChangeData) => {
 			if (propertyChangeData.propertyName === "scan") {
+				if (isIOS) {
+					Frame.topmost().nativeView.endEditing(true);
+				}
+				if (isAndroid) {
+					utils.ad.dismissSoftInput();
+				}
 				this.scannig();
 			}
 		}, this);
 
 		this.selectedTab(0);
+		this.limit = new Semaphore(1);
 	}
 
 	public loaded(args){
@@ -70,7 +86,7 @@ export class TabModel extends Observable {
 			case 1: this.set("icon_bag", "res://sacola2");  this.refreshBagPage(); break;
 			case 2: this.set("icon_products", "res://loja2"); break;
 		}   
-		//this.focusColetor();     
+		this.scanFocus();     
 	}  
 
 	private refreshIcons() {
@@ -100,18 +116,69 @@ export class TabModel extends Observable {
 		if(txt){
 			txt.focus();
 			txt.dismissSoftInput();
+			//this.scanning = false;
+			txt.text = '';
 		}
 	}
 
 	public scannig(){
-		var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan');
+		this.set('visibility_processing_tab', 'collapsed');
+		this.set('visibility_tab', 'collapsed');
+		this.set('visibility_products', 'collapsed');
+		this.set('visibility_scanning', 'visible');
+
+		var scan_now =  this.scan.replace(/(\r\n\t|\n|\r\t)/gm,"");	
+		setTimeout(function(model, length_before){
+			model.limit.use(async () => {
+				await model.criticaFunction(length_before);
+			});
+		}, 750, this, scan_now.length);
+
+		/*if(!this.scanning){
+			console.log('INICIOU SCAN');
+			setTimeout(function(model){
+				//var search = model.scan.replace(/(\r\n\t|\n|\r\t)/gm,"");
+				var search = model.scan.replace(/[^\x20-\x7E]/gmi, "");
+
+				console.log(search);
+				
+				var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan');
+				txt.text = '';
+				model.searchProduct(search);
+				model.scanning = false;
+				console.log('FINALIZOU SCAN');
+
+			}, 1000, this);
+		} 
+		this.scanning = true;*/
+		
+
+		/*var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan');
+		txt.dismissSoftInput();
 		if((this.scan.match(/\n/g)||[]).length == 1){
-			txt.dismissSoftInput();
-			var search = txt.text;
+			//var search = txt.text;
+			
+			var search = this.scan.replace(/(\r\n\t|\n|\r\t)/gm,"");
 			txt.text = '';
-			search = search.replace(/(\r\n\t|\n|\r\t)/gm,"");
-			this.searchProduct(search);
-		}
+			console.log(search);
+			this.searchProduct(search);			
+
+		}*/
+	}
+
+	public criticaFunction(length_before){
+		var search = this.scan.replace(/(\r\n\t|\n|\r\t)/gm,"");
+		if(length_before == search.length){
+			this.set('scan', '');
+			if(search.length > 0){
+				console.log(search);
+				this.searchProduct(search);
+				this.set('visibility_processing_tab', 'collapsed');
+				this.set('visibility_tab', 'visible');
+				this.set('visibility_products', 'collapsed');
+				this.set('visibility_scanning', 'collapsed');
+			}
+		} 
 	}
 
 	public searchProduct(search){
@@ -154,7 +221,7 @@ export class TabModel extends Observable {
 			}
 			return false;
 		});
-		products = products.slice(-10);
+		products = products.slice(-50);
 		this.set('products', products);
 	}
 
@@ -180,6 +247,7 @@ export class TabModel extends Observable {
 				settings.remove('clients');
 				settings.remove('shipping_companies');
 				settings.remove('password');
+				settings.remove('order');
 				Frame.getFrameById('root-frame').navigate({moduleName: "views/login/login-page", clearHistory: true});
 			}
 		});
@@ -188,19 +256,22 @@ export class TabModel extends Observable {
 	public action_back_tab(){
 		this.set('visibility_processing_tab', 'collapsed');
 		this.set('visibility_tab', 'visible');
-		this.set('visibility_products', 'collapsed');		
+		this.set('visibility_products', 'collapsed');
+		this.set('visibility_scanning', 'collapsed');		
 	}
 
 	public action_search(){
 		this.set('visibility_processing_tab', 'collapsed');
 		this.set('visibility_tab', 'collapsed');
 		this.set('visibility_products', 'visible');
+		this.set('visibility_scanning', 'collapsed');
 	}
 
 	public action_refresh(){
 		this.set('visibility_processing_tab', 'visible');
 		this.set('visibility_tab', 'collapsed');
 		this.set('visibility_products', 'collapsed');
+		this.set('visibility_scanning', 'collapsed');
 		this.updateProducts();
 	}
 

@@ -4,7 +4,13 @@
 			<TextField text="{{ search }}" hint="CNPJ/Razão Social" class="-border m-0 t-14" flexGrow="1" />
 			<Button text="{{ '0xe973' | getIcon }}" class="icon t-25 border-no bg-primary m-0" tap="{{ gotoClientCreate }}" flexShrink="0" />
 		</FlexboxLayout>
-		<ListView class="list-group1 m-t-101" items="{{ clients }}" itemTap="{{ gotoClientShow }}" >
+
+		<FlexboxLayout  justifyContent="center"  visibility="{{ visibility_processing }}" flexGrow="1">
+			<Label text="{{ processing_message }}" class="t-12 m-r-20" alignSelf="center" />
+			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
+		</FlexboxLayout>
+		
+		<ListView class="list-group1 m-t-101" items="{{ clients }}" itemTap="{{ gotoClientShow }}" visibility="{{ visibility_page }}" >
 			<ListView.itemTemplate>
 				<StackLayout class="-separator">
 					<Label text="{{ corporate_name }}" class="p-0 t-16" />

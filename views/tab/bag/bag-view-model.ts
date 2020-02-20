@@ -6,6 +6,7 @@ import { BarcodeScanner } from "nativescript-barcodescanner";
 import { TabView } from "tns-core-modules/ui/tab-view";
 import * as dialogs from "tns-core-modules/ui/dialogs";
 
+
 export class BagModel extends Observable {
 
 	public visibility_processing;
@@ -26,14 +27,11 @@ export class BagModel extends Observable {
 	public loaded(args = null) {
 		var order = JSON.parse(settings.getString('order', null));
 		if(order){
-			this.set('items', order.items);
-
+			this.set('items', order.items.reverse());
 		} else {
 			this.set('items', null);
 		}
 	}
-
-
 
 	public onItemTapItem(args){
 		dialogs.action("", "Cancelar", ["Remover Item", "Editar Item"]).then(result => {
@@ -54,7 +52,8 @@ export class BagModel extends Observable {
 		axios.delete(settings.getString("api")+'/items/'+id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('order', JSON.stringify(result.data));
-				this.set('items', result.data.items);
+				this.loaded();
+				//this.set('items', result.data.items);
 				this.set('visibility_processing', 'collapsed');
 				this.set('visibility_page', 'visible');
 			},
@@ -99,6 +98,8 @@ export class BagModel extends Observable {
 	}
 
 	public search(search){
+		//console.log('Opa');
+		//console.log(search);
 		var products = JSON.parse(settings.getString('products', '[]'));
 		var product = products.find(
 			(product) => {

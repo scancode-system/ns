@@ -7,6 +7,8 @@ application.on(launchEvent, (args: LaunchEventData) => {
 });
 
 application.on(resumeEvent, (args: LaunchEventData) => {
+//	var saller = settings.getString('saller');
+//console.log('RESUME APPLICATION: '+saller);
 	//settings.setString('url', 'http://192.168.0.21/dashboardw');
 	//settings.setString('api', settings.getString('url')+'/api');
 	//settings.setString('username', 'http://192.168.0.100/api/');
@@ -62,11 +64,12 @@ application.setResources( { getIcon, concurrency, historicoItems, historicoBg , 
 // colcoar aqui condicao para ver qual frame vai ser carregado
 
 
-var saller = settings.getString('saller');
-if(saller){
-	application.run({ moduleName: "views/tab/frame-root" });
-} else {
+//var saller = settings.getString('saller');
+//console.log('START APPLICATION: '+saller);
+//if(saller){
+//	application.run({ moduleName: "views/tab/frame-root" });
+//} else {
 	application.run({ moduleName: "views/login/frame-root" });
-}	
+//}	
 
 

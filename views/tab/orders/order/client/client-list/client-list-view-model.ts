@@ -16,10 +16,23 @@ export class ClientListModel extends Observable {
 		super();
 		this.visibility_processing = 'collapsed';
 		this.visibility_page = 'visible';
+		this.processing_message = 'Buscando Clientes';
 
 		this.on(Observable.propertyChangeEvent, (propertyChangeData: PropertyChangeData) => {
 			if (propertyChangeData.propertyName === "search") {
-				this.filter();
+				this.set('visibility_processing', 'visible');
+				this.set('visibility_page', 'collapsed');
+				setTimeout(function(model, length_before){
+					if(length_before == model.search.length){
+						model.set('visibility_processing', 'collapsed');
+						model.set('visibility_page', 'visible');
+						model.filter();
+					} else {
+						//console.log('nao');
+					}
+				}, 1000, this, this.search.length);
+
+				//this.filter();
 			}
 		}, this);		
 	}
@@ -50,7 +63,7 @@ export class ClientListModel extends Observable {
 			return false;
 		});
 
-		clients = clients.slice(-10);
+		clients = clients.slice(-30);
 		this.set('clients', clients);
 	}
 

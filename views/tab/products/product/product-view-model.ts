@@ -105,6 +105,50 @@ export class ProductModel extends Observable {
 		}
 	}
 
+	public qtyPrompt(){
+		dialogs.prompt({
+			message: "Digite a Quantidade",
+			okButtonText: "Confirmar",
+			cancelButtonText: "Cancelar",
+			defaultText: this.item.qty+'',
+			inputType: dialogs.inputType.number
+		}).then(
+		(result) => {
+setTimeout(function(){
+				if (isIOS) {
+					Frame.topmost().nativeView.endEditing(true);
+				}
+				if (isAndroid) {
+					utils.ad.dismissSoftInput();
+				}
+			}, 50);
+
+			/* ATENÇÃO O TECLADO FICA LEVANTADO POR CAUSA DO TEXTVIWE PARA LEITURA DA BARRA DE CODIGO QUE VOLTA A FOCAR NELE */
+			/*setTimeout(function(){
+				if (isIOS) {
+					Frame.topmost().nativeView.endEditing(true);
+				}
+				if (isAndroid) {
+					utils.ad.dismissSoftInput();
+				}
+			}, 50);*/
+			
+			if(result.result){
+				if(result.text != ''){
+					if(parseInt(result.text) <= 0){
+						this.updateQtyPrompt(1);
+					} else {
+						this.updateQtyPrompt(parseInt(result.text));	
+					}
+				}
+			}
+		});
+	}
+
+	private updateQtyPrompt(qty){
+		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (qty), discount: this.item.discount, price: this.item.price, observation: this.item.observation});
+	}
+
 	private updateQty(qty){
 		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (this.item.qty+qty), discount: this.item.discount, price: this.item.price, observation: this.item.observation});
 	}
@@ -174,7 +218,7 @@ export class ProductModel extends Observable {
 	}
 
 	public post(){
-		console.log(this.item);
+		//console.log(this.item);
 		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('order', JSON.stringify(result.data));
