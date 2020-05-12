@@ -1,17 +1,20 @@
 <Page xmlns="http://schemas.nativescript.org/tns.xsd" actionBarHidden="true" navigatingTo="navigatingTo" loaded="{{ loaded }}">
-	<ListView items="{{ products }}" itemTap="{{ gotoProduct }}">
-		<ListView.itemTemplate>
-			<FlexboxLayout class="-separator p-x-15">
-				<Image src="{{ image  | urlBefore }}" class="m-r-10 w-25" flexShrink="0" />
-				<FlexboxLayout flexDirection="column" justifyContent="center">
-					<Label text="{{ description }}"  class="m-0 p-0 t-14" />
-					<Label text="{{ sku }}" flexGrow="1" class="m-0 p-0 t-10" />
-					<FlexboxLayout justifyContent="flex-start">
-						<Label text="Preço: " class="m-0 p-0 t-14"   />
-						<Label text="{{ price | concurrency }}" class="m-0 p-0 t-14" />
+	<FlexboxLayout  flexDirection="column" justifyContent="center"  >
+		<Label text="{{ description }}" class="h1 p-x-15 border-bottom w-100 text-center" alignSelf="center" flexShrink="0" textWrap="true" />
+		<ListView items="{{ products }}" itemTap="{{ gotoProduct }}" flexGrow="1">
+			<ListView.itemTemplate>
+				<FlexboxLayout class="-separator p-x-15">
+					<Image src="{{ image  | urlBefore }}" class="m-r-10 w-25" flexShrink="0" />
+					<FlexboxLayout flexDirection="column" justifyContent="center">
+						<Label text="{{ description }}"  class="m-0 p-0 t-14" />
+						<Label text="{{ sku }}" flexGrow="1" class="m-0 p-0 t-10" />
+						<FlexboxLayout justifyContent="flex-start">
+							<Label text="Preço: " class="m-0 p-0 t-14"   />
+							<Label text="{{ price | concurrency }}" class="m-0 p-0 t-14" />
+						</FlexboxLayout>
 					</FlexboxLayout>
 				</FlexboxLayout>
-			</FlexboxLayout>
-		</ListView.itemTemplate>
-	</ListView>
+			</ListView.itemTemplate>
+		</ListView>
+	</FlexboxLayout>
 </Page>

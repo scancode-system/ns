@@ -45,7 +45,7 @@ ActionBar{
 .bg-info{background: #63c2de; color: #f0f3f5;}
 .bg-success{background: #4dbd74; color:#fff;}
 .bg-light{background: #f0f3f5;}
-.bg-dark{background: #29363d;}
+.bg-dark{background: #29363d; color:#fff;}
 .bg-white{background: #ffffff;}
 
 
@@ -57,13 +57,17 @@ ActionBar{
 .text-success{color: #4dbd74;}
 .text-light{color: #f0f3f5;}
 .text-dark{color: #29363d;}
+.text-muted{color: #73818f;}
 
 
 /*  oulines */
+.-outline-primary{height:40;border-width:1;  margin:8 16;border-color: #20a8d8;}
+.-outline-secondary{height:40;border-width:1;margin:8 16;border-color: #a4b7c1;}
 .-outline-danger{height:40;border-width:1;margin:8 16;border-color: #f86c6b;}
 .-outline-warning{height:40;border-width:1;margin:8 16;border-color: #ffc107;}
 .-outline-success{height:40;border-width:1;margin:8 16;border-color: #4dbd74;}
 .-outline-dark{height:40;border-width:1;margin:8 16; border-color: #29363d;}
+.-outline-muted{height:40;border-width:1;margin:8 16; border-color: #73818f;}
 
 
 /* width */
@@ -99,9 +103,6 @@ ActionBar{
 .border-radius-sm{border-radius: 4;}
 .border-radius-md{border-radius: 10;}
 .border-radius-lg{border-radius: 20;}
-
-
-
 
 
 

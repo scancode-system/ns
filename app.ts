@@ -59,7 +59,13 @@ function urlBefore(value){
 	return settings.getString('url', '')+'/'+value;
 }
 
-application.setResources( { getIcon, concurrency, historicoItems, historicoBg , urlBefore, percentage});
+function itemsVariations(data){
+	//console.log('teste');
+	console.log(data);
+	return [0,1,2];
+}
+
+application.setResources( { getIcon, concurrency, historicoItems, historicoBg , urlBefore, percentage, itemsVariations});
 
 // colcoar aqui condicao para ver qual frame vai ser carregado
 

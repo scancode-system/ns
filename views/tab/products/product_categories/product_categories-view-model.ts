@@ -30,7 +30,7 @@ export class ProductCategoriesModel extends Observable {
 	}
 
 	public gotoProducts(args){
-		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/products/products-page", context: args.view.bindingContext.id});
+		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/products/products-page", context: args.view.bindingContext});
 	}
 
 }

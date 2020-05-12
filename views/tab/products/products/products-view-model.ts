@@ -6,10 +6,12 @@ export class ProductsModel extends Observable {
 
 	public products: Array<object>;
 	public id: number;
+	public description: string;
 
-	constructor(id) {
+	constructor(category) {
 		super();
-		this.id = id;
+		this.id = category.id;
+		this.description = category.description; 
 	}
 
 	public loaded(args) {
@@ -24,7 +26,7 @@ export class ProductsModel extends Observable {
 	}
 
 	public gotoProduct(args){
-		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: args.view.bindingContext.id, backstackVisible: false});
+		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});
 	}
 
 }
