@@ -1,0 +1,96 @@
+<Page xmlns="http://schemas.nativescript.org/tns.xsd" shownModally="onShownModally">
+	<ScrollView width="100%">
+		<FlexboxLayout flexDirection="column" class="p-15">
+
+			<!--<ListView  items="{{ final }}">
+				<ListView.itemTemplate>
+					<StackLayout>
+						<Label text="{{ 'Regra '+id }}" row="2" col="1" class="t-12 font-weight-bold" />
+						<FlexboxLayout>
+									<Label text="Variação" flexGrow="1" />
+									<Label text="Quantidade" flexGrow="1" />
+								</FlexboxLayout>
+						
+						<ListView  items="{{ data }}">
+							<ListView.itemTemplate>
+								<FlexboxLayout>
+									<Label text="Variação" flexGrow="1" />
+									<Label text="Quantidade" flexGrow="1" />
+								</FlexboxLayout>
+							</ListView.itemTemplate>
+						</ListView>
+
+					</StackLayout>
+
+				</ListView.itemTemplate>
+			</ListView>-->
+
+			<Repeater items="{{ mySecondItems }}">
+				<Repeater.itemTemplate>
+					<StackLayout>
+						<Label text="{{ 'Regra '+ id }}" class="t-12 font-weight-bold" />
+						<FlexboxLayout >
+							<Label text="Variação" flexGrow="1" />
+							<Label text="Quantidade" flexGrow="1" />
+						</FlexboxLayout>
+
+						<Repeater items="{{ data }}">
+							<Repeater.itemTemplate>
+								<FlexboxLayout >
+									<Label text="{{ value }}" flexGrow="1"  />
+									<Label text="{{ min_qty }}" flexGrow="1" />
+								</FlexboxLayout>
+							</Repeater.itemTemplate>
+						</Repeater>
+
+					</StackLayout>
+				</Repeater.itemTemplate>
+			</Repeater>
+
+<!--
+
+			<Label text="Regra 1" row="2" col="1" class="t-12 font-weight-bold" />
+
+			<FlexboxLayout>
+				<Label text="Variação" flexGrow="1" />
+				<Label text="Quantidade" flexGrow="1" />
+			</FlexboxLayout>
+			<FlexboxLayout>
+				<Label text="P" flexGrow="1" />
+				<Label text="3" flexGrow="1" />
+			</FlexboxLayout>
+			<FlexboxLayout>
+				<Label text="PP" flexGrow="1" />
+				<Label text="4" flexGrow="1" />
+			</FlexboxLayout>
+			<FlexboxLayout>
+				<Label text="GG" flexGrow="1" />
+				<Label text="5" flexGrow="1" />
+			</FlexboxLayout>
+
+
+			<Label text="Regra 2" row="2" col="1" class="t-12 font-weight-bold" />
+
+			<FlexboxLayout>
+				<Label text="Variação" flexGrow="1" />
+				<Label text="Quantidade" flexGrow="1" />
+			</FlexboxLayout>
+			<FlexboxLayout>
+				<Label text="P" flexGrow="1" />
+				<Label text="3" flexGrow="1" />
+			</FlexboxLayout>
+			<FlexboxLayout>
+				<Label text="PP" flexGrow="1" />
+				<Label text="4" flexGrow="1" />
+			</FlexboxLayout>
+			<FlexboxLayout>
+				<Label text="GG" flexGrow="1" />
+				<Label text="5" flexGrow="1" />
+			</FlexboxLayout>
+-->
+
+
+
+		</FlexboxLayout>
+	</ScrollView>
+</Page>

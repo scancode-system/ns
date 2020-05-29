@@ -9,11 +9,16 @@ import { isIOS, isAndroid } from "tns-core-modules/platform";
 import { Label } from "tns-core-modules/ui/label";
 import { Button } from "tns-core-modules/ui/button";
 import {FlexboxLayout} from "tns-core-modules/ui/layouts/flexbox-layout";
+import { ShowModalOptions } from "tns-core-modules/ui/core/view";
 
-export class ProductModel extends Observable {
+export class ProductVariationMinModel extends Observable {
 
+	private products;
 	public product; 
+
+	private items;
 	public item;
+
 	public observation;
 
 	public id: number;
@@ -32,13 +37,27 @@ export class ProductModel extends Observable {
 	public all;
 	public available;
 
+	private page;
+
+	public table_variations;
+
+	public lengthColumns;
+	public lengthRows;
+
+
 	constructor(id) {
 		super();
 		this.id = id;
 		this.url = settings.getString('url')+'/';
+
+		this.products = [];
+		this.items = [];
 	}
 
 	public loaded(args) {
+
+		this.page = args.object;
+
 		this.set('visibility_processing', 'visible');
 		this.set('visibility_page', 'collapsed');
 		this.set('visibility_edit_item', 'collapsed');
@@ -46,26 +65,28 @@ export class ProductModel extends Observable {
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				this.set('product', result.data);
+				//console.log(result.data.family);
+				this.products = result.data.family;
+				let product = this.products.find(product => result.data.id == product.id);
 
-				this.set('all', this.product.product_variation.all);
-				this.set('available', this.product.product_variation.available);
-
-				
-				this.loadItem(result.data.id);
-
+				this.loadItems(product);
+				this.loadProduct(product);
+				this.refreshTableItems();
 
 				this.set('visibility_processing', 'collapsed');
 				this.set('visibility_page', 'visible');
+
+				//console.log(result.data);
+				
+				//this.loadItem(result.data.id);				
 				if(this.item.order_id){
 					this.set('visibility_edit_item', 'visible');
 				}
 
-				this.loadingVariations(args.object);
 				this.setListPickerProductFamily();
 			},
 			(error) => {
-				console.log(error.response);
+				//console.log(error.response);
 				if(error.response.status == 401)
 				{
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
@@ -78,8 +99,19 @@ export class ProductModel extends Observable {
 			});
 	}
 
-	private loadingVariations(page){
-		let flexbox_variations = <FlexboxLayout>(page).getViewById('variations');
+
+	private loadProduct(product){
+		this.set('product', product);
+
+		this.set('all', this.product.product_variation.all);
+		this.set('available', this.product.product_variation.available);
+
+		this.loadingVariations();
+		this.loadItem();
+	}
+
+	private loadingVariations(){
+		let flexbox_variations = <FlexboxLayout>(this.page).getViewById('variations');
 		flexbox_variations.removeChildren();
 
 		let product = this.product;
@@ -131,15 +163,15 @@ export class ProductModel extends Observable {
 
 						let variation = btn.parent.id;
 						let value = btn.text; 
+						
 						let product = modelThis.getProductByVariations(variation, value);
-						//console.log(product);
-						if(product){
-							Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});
-						} else {
+						if(!product){
 							product = modelThis.getProductByChanged(variation, value);
-							console.log(product);
-							Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});
 						}
+
+						//console.log(product);
+						modelThis.loadProduct(product);
+						//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});
 					});
 
 					container_btns.addChild(btn);
@@ -152,10 +184,10 @@ export class ProductModel extends Observable {
 	}
 
 	private getProductByVariations(variantionChanged, newValue){
-		console.log(variantionChanged);
-		console.log(newValue);
+		//console.log(variantionChanged);
+		//console.log(newValue);
 
-		let products = this.product.family;
+		let products = this.products;
 		let product = products.find(product => {
 
 			let find = true;
@@ -169,8 +201,6 @@ export class ProductModel extends Observable {
 						value = this.product[variation.table];
 					}
 				}
-
-
 				if(product[variation.table] === null){
 					if(product[variation.table] !== value){
 						find = false;
@@ -180,33 +210,6 @@ export class ProductModel extends Observable {
 						find = false;
 					}
 				}
-
-
-				/*if(variation.table == variantionChanged){
-					value = 
-				} else {
-
-				}
-
-
-
-				if(product[variation.table] === null){
-
-					if(this.product[variation.table] !== product[variation.table]){
-						find= false;
-					}
-				} else if(variation.table == variantionChanged){
-					if(product[variation.table][variation.column] != newValue) {
-						find = false;
-					}
-				} else if(product[variation.table][variation.column] != this.product[variation.table][variation.column]) {
-					find = false;
-				}*/
-
-
-
-
-				
 			});
 			return find;
 		});
@@ -216,7 +219,7 @@ export class ProductModel extends Observable {
 
 
 	private getProductByChanged(variantionChanged, newValue){
-		let products = this.product.family;
+		let products = this.products;
 		let product = products.find(product => {
 			let find = false;
 			this.all.forEach(variation => {
@@ -233,25 +236,166 @@ export class ProductModel extends Observable {
 		return product;
 	}
 
-
-
-	public loadItem(id){
+	public loadItems(product){
 		var order = JSON.parse(settings.getString('order', null));
+		let items = order.items.filter(item => {return item.item_product.sku == product.sku});
+
+		items = items.map(item => {return {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price, observation: item.observation};});
+		this.set('items', items);	
+	}
+
+
+	public loadItem(){
+		var order = JSON.parse(settings.getString('order', null));
+		
 		if(order){
-			var item = order.items.find(function(item){
-				return item.product_id == id 
+
+			let items = this.items;
+
+			var item = items.find(item  => {
+				return item.product_id == this.product.id 
 			});
 
 			if(item){
 				this.set('item', {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price, observation: item.observation});
-				this.set('observation', item.observation);
+				//this.set('observation', item.observation);
 			} else {
-				console.log(this.qty_start());
-				this.set('item', {id: null, order_id: order.id, product_id: this.id, qty: this.qty_start(), discount: 0, price: this.product.price, observation: ''});
+				this.set('item', {id: null, order_id: order.id, product_id: this.product.id, qty: this.qty_start(), discount: 0, price: this.product.price, observation: ''});
 			}
+
 		} else {
 			this.set('item', {order_id: null});
 		}	
+
+	}
+
+	public refreshTableItems(){
+		let grid = <FlexboxLayout>(this.page).getViewById('items_variations');
+		grid.removeChildren();
+
+		let rows = this.items.length;
+		let columns = -1;
+
+		// header
+		this.all.forEach(function(variation, index){
+			columns++;
+
+			const labelHeader = new Label();
+			labelHeader.text = variation.variation;
+			labelHeader.row = 0;
+
+			labelHeader.column = columns;
+			labelHeader.className = 'bg-dark p-l-10 p-t-5';	
+
+			grid.addChild(labelHeader);					
+		});
+
+
+		columns++;
+		const labelHeader = new Label();
+		labelHeader.text = 'Qtd.';
+		labelHeader.row = 0;
+		labelHeader.column = columns;
+		labelHeader.className = 'bg-dark p-t-5';
+		grid.addChild(labelHeader);
+
+		
+		columns++;
+		const labelHeader2 = new Label();
+		labelHeader2.text = '';
+		labelHeader2.row = 0;
+		labelHeader2.column = columns;
+		labelHeader2.className = 'bg-dark';
+		grid.addChild(labelHeader2);
+
+		// body
+		let thisModel = this;
+		this.items.forEach(function(item, row){
+
+			let product = thisModel.products.find(product => {return product.id == item.product_id});
+
+
+
+			thisModel.all.forEach(function(variation, column){
+				let value = 'N/A';
+				if(product[variation.table]){
+					value = product[variation.table][variation.column];
+				}
+
+				const label = new Label();
+				label.text = value;
+				label.row = (row+1);
+				label.column = column;
+				label.className = 'p-l-10 p-t-5';
+				grid.addChild(label);
+			});
+
+
+			let label = new Label();
+			label.text = item.qty;
+			label.row = (row+1);
+			label.column = thisModel.all.length;
+			label.className = 'p-t-5';
+			grid.addChild(label);
+
+			let btn = new Button();
+			btn.text = String.fromCharCode(0xe9ac);
+			btn.className = "icon -outline-white m-0 text-danger t-14";
+			btn.row = (row+1);
+			btn.column = thisModel.all.length+1;
+			grid.addChild(btn);
+
+			//e9ac
+
+			btn.on(Button.tapEvent, (data) => {
+
+				//console.log(thisModel.items);
+				let items = thisModel.items.filter(item_from_this_model => {return item.product_id != item_from_this_model.product_id;});
+				thisModel.set('items', items);
+				thisModel.refreshTableItems();
+
+				//console.log(items);
+
+
+				//alert('oi');
+
+				//				console.log(product);
+
+				/*let btn = <Button>data.object;
+
+				let variation = btn.parent.id;
+				let value = btn.text; 
+
+				let product = modelThis.getProductByVariations(variation, value);
+				if(!product){
+					product = modelThis.getProductByChanged(variation, value);
+				}
+
+				//console.log(product);
+				modelThis.loadProduct(product);
+				//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});*/
+			});
+
+
+		});
+
+		this.setPrepertiesGrid(columns, rows);
+
+	}
+
+	private setPrepertiesGrid(columns, rows){
+		let lengthColumns = '';
+		for(let i = 0; i <= columns; i++){
+			lengthColumns+='*, ';
+		}
+
+		let lengthRows = '';
+		for(let i = 0; i <= rows; i++){
+			lengthRows+='*, ';
+		}
+
+		this.set('lengthColumns', lengthColumns);
+		this.set('lengthRows', lengthRows);
 	}
 
 	public setListPickerProductFamily(){
@@ -318,7 +462,7 @@ export class ProductModel extends Observable {
 
 	private updateQty(qty){
 		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (this.item.qty+qty), discount: this.item.discount, price: this.item.price, observation: this.item.observation});
-		console.log(this.item);
+		//console.log(this.item);
 	}
 
 	private updateDiscount(discount){
@@ -394,6 +538,73 @@ export class ProductModel extends Observable {
 		});
 	}	
 
+	public addUpdateItem(args){
+		let items = this.items;
+
+		items = items.filter(item => {return this.item.product_id != item.product_id;});
+
+
+
+		//console.log(this.item);
+		//let items = this.items.filter(function(item){return item.product_id <> item.product_id});
+		items.unshift(this.item);
+
+		this.set('items', items);
+
+		this.refreshTableItems();
+		alert('Item Adicionado/Atualizado.');
+
+	}
+
+	public confirm2(args){
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('visibility_edit_item', 'collapsed');
+		this.set('processing_message', 'Atualizando a Sacola');
+		//this.updateObservation(this.observation);
+
+		this.put2();
+	}
+
+
+	public put2(){
+		//console.log(this.items);
+		axios.put(settings.getString("api")+'/items/'+this.item.order_id+'/many', this.items,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				settings.setString('order', JSON.stringify(result.data.order));
+				Frame.getFrameById('products-frame').goBack();
+				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
+				tab_view.selectedIndex = 1;
+
+				result.data.fails.forEach(fail => alert(fail));
+
+			},
+			(error) => {
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
+				this.set('visibility_edit_item', 'visible');
+				if(error.response.status == 401 || error.response.status == 404)
+				{
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else if(error.response.status == 422) {
+					var errors = Object.keys(error.response.data.errors);
+					alert(error.response.data.errors[errors[0]][0]);
+				} else if(error.response.status == 403){
+					alert(error.response.data);					
+				}else {
+					alert(error.response.data.message);
+				}
+			});
+	}	
+
+	public openRules(args){
+		args.object.showModal('views/tab/products/product-variations-min/rules/product-variations-rules-page', {
+			context: this.product.variation_mins,
+			closeCallback: (username, password) => {
+			},
+		});
+	}
+
 
 	public confirm(args){
 		this.set('visibility_processing', 'visible');
@@ -414,10 +625,12 @@ export class ProductModel extends Observable {
 		//console.log(this.item);
 		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				settings.setString('order', JSON.stringify(result.data));
+				//console.log(result.data);
+
+				/*settings.setString('order', JSON.stringify(result.data));
 				Frame.getFrameById('products-frame').goBack();
 				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
-				tab_view.selectedIndex = 1;
+				tab_view.selectedIndex = 1;*/
 			},
 			(error) => {
 				console.log(error);

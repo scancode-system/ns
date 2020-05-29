@@ -26,7 +26,11 @@ export class ProductsModel extends Observable {
 	}
 
 	public gotoProduct(args){
-		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});
+		if(args.view.bindingContext.variation_mins.length > 0){
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: args.view.bindingContext.id, backstackVisible: false});
+		} else {
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
+		}
 	}
 
 }

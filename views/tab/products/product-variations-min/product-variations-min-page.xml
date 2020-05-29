@@ -19,25 +19,6 @@
 
 				<FlexboxLayout flexDirection="column" id="variations" ></FlexboxLayout>
 
-				<FlexboxLayout flexDirection="column" visibility="{{ visibility_edit_item }}">
-					<Label text="{{ product.price | concurrency }}" class="t-30 text-center m-t-10 m-b-15" />
-					<FlexboxLayout>
-						<Button text="{{ '0xea0b' | getIcon }}" class=" icon -outline-primary text-primary m-0"  tap="{{ remove }}" longPress="{{ qtyPrompt }}" />
-						<TextField text="{{ item.qty }}" class="-outline-primary m-0 t-18 text-primary" style="margin:0px; border-width:1 0 1 0; padding: 0 10 0 10" width="80" textAlignment="center" editable="false" tap="{{ changeQty }}" />
-						<Button text="{{ '0xea0a' | getIcon }}" class="icon -outline-primary text-primary m-0"  tap="{{ add }}"  />
-						
-						<Button text="OBS" class="icon -outline-dark m-0 m-l-10" style="border-width: 1 0 1 1;"  tap="{{ obsPrompt }}" />
-						<Button text="{{ item.discount+'%' }}" class="icon -outline-dark m-0"  tap="{{ discountPrompt }}" />
-					</FlexboxLayout>
-					<Button text="Incluir na sacola" class="icon bg-primary -outline-primary  m-0 m-t-10 m-b-10 t-20" tap="{{ confirm }}" />
-				</FlexboxLayout>
-
-
-				<FlexboxLayout class="m-b-10" justifyContent="center">
-					<Label text="Informações " class="t-16" />
-					<Label text="{{ '0xea08' | getIcon }}" class="icon t-20 m-r-10" />
-				</FlexboxLayout>
-
 				<FlexboxLayout class="bg-light p-y-10">
 					<StackLayout flexGrow="1">
 						<Label text="ID" class="t-10 text-center p-y-0" />
@@ -97,6 +78,88 @@
 						</ListView.itemTemplate>
 					</ListView>
 				</FlexboxLayout>
+
+
+
+
+
+				<FlexboxLayout flexDirection="column" visibility="{{ visibility_edit_item }}" class="m-t-10">
+					<!--<Label text="{{ product.price | concurrency }}" class="t-30 text-center  m-b-15" />-->
+					<FlexboxLayout>
+						<Button text="{{ '0xea0b' | getIcon }}" class=" icon -outline-primary text-primary m-0"  tap="{{ remove }}" longPress="{{ qtyPrompt }}" />
+						<TextField text="{{ item.qty }}" class="-outline-primary m-0 t-18 text-primary" style="margin:0px; border-width:1 0 1 0; padding: 0 10 0 10" width="80" textAlignment="center" editable="false" tap="{{ changeQty }}" />
+						<Button text="{{ '0xea0a' | getIcon }}" class="icon -outline-primary text-primary m-0"  tap="{{ add }}"  />
+						
+						<Button text="OBS" class="icon -outline-dark m-0 m-l-10" style="border-width: 1 0 1 1;"  tap="{{ obsPrompt }}" />
+						<Button text="{{ item.discount+'%' }}" class="icon -outline-dark m-0"  tap="{{ discountPrompt }}" />
+					</FlexboxLayout>
+					<Button text="Incluir/Atualizar" class="icon bg-info -outline-info  m-0 m-t-10 m-b-10 t-20" tap="{{ addUpdateItem }}" />
+				</FlexboxLayout>
+				<StackLayout visibility="{{ visibility_edit_item }}">
+					<GridLayout columns="{{ lengthColumns }}" rows="{{ lengthRows }}" class="t-12" id="items_variations"></GridLayout>
+				</StackLayout>
+				<FlexboxLayout visibility="{{ visibility_edit_item }}">
+					<Button text="Confirmar" class="bg-primary -outline-primary  m-0 m-b-10 m-r-10  t-20" tap="{{ confirm2 }}" flexGrow="1" />
+					<Button text="Conjuntos" class="bg-dark -outline-dark  m-0 m-b-10 m-r-10  t-20" tap="{{ openRules }}" flexGrow="1" />
+				</FlexboxLayout>
+
+
+
+
+
+				<!--<StackLayout class="hr"></StackLayout>
+
+				<GridLayout columns="*, *, *, *" rows="*, *, *, *" class="t-12">
+					<Label text="Tamanho" row="0" col="0" class="bg-dark p-l-10" />
+					<Label text="Cor" row="0" col="1" class="bg-dark" />
+					<Label text="Qtd." row="0" col="2" class="bg-dark" />
+					<Label text="" row="0" col="3" class="bg-dark" />
+
+					<Label text="M" row="1" col="0" class="p-l-10" />
+					<Label text="Vermelho" row="1" col="1" class="" />
+					<Label text="3" row="1" col="2" class="" />
+					<Button text="{{ '0xea0e' | getIcon }}" row="1" col="3" class="icon -outline-white m-0 text-danger t-14" style=""  tap="{{ obsPrompt }}" />
+
+					<Label text="M" row="2" col="0" class="p-l-10" />
+					<Label text="Vermelho" row="2" col="1" class="" />
+					<Label text="3" row="2" col="2" class="" />
+					<Button text="{{ '0xea0e' | getIcon }}" row="2" col="3" class="icon -outline-white m-0 text-danger t-14" style=""  tap="{{ obsPrompt }}" />
+
+					<Label text="M" row="3" col="0" class="p-l-10" />
+					<Label text="Vermelho" row="3" col="1" class="" />
+					<Label text="3" row="3" col="2" class="" />
+					<Button text="{{ '0xea0e' | getIcon }}" row="3" col="3" class="icon -outline-white m-0 text-danger t-14" style=""  tap="{{ obsPrompt }}" />
+				</GridLayout>-->
+
+
+				<!--<Repeater items="{{ items }}" row="1">
+
+					<Repeater.itemsLayout>
+						<FlexboxLayout />
+					</Repeater.itemsLayout>
+
+
+					<Repeater.itemTemplate>
+						<FlexboxLayout flexDirection="column">
+							
+							<Repeater items="{{ $parents['Page'].all }}">
+								<Repeater.itemsLayout>
+									<FlexboxLayout />
+								</Repeater.itemsLayout>
+								<Repeater.itemTemplate>
+									<Label text="{{ $parents['Page'].tableVariationValue }}" class="t-10 text-center  m-b-15" />
+								</Repeater.itemTemplate>
+							</Repeater>
+
+						</FlexboxLayout>
+					</Repeater.itemTemplate>
+				</Repeater>-->
+
+
+				<!--<FlexboxLayout class="m-b-10" justifyContent="center">
+					<Label text="Informações " class="t-16" />
+					<Label text="{{ '0xea08' | getIcon }}" class="icon t-20 m-r-10" />
+				</FlexboxLayout>-->
 			</FlexboxLayout>
 		</ScrollView>
 	</FlexboxLayout>

@@ -38,11 +38,27 @@ export class BagModel extends Observable {
 			if(result == "Remover Item"){
 				this.remove(args.view.bindingContext.id);
 			}else if(result == "Editar Item"){
-				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: args.view.bindingContext.product_id, backstackVisible: false});
-				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
-				tab_view.selectedIndex = 2;
+				this.update(args.view.bindingContext);
 			}
 		});
+	}
+
+	public update(item){
+
+		var products = JSON.parse(settings.getString('products', '[]'));
+
+		let product = products.filter(function(product){
+			return (product.id == item.product_id);
+		})[0];
+
+		if(product.variation_mins.length > 0){
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+		} else {
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
+		}
+
+		var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
+		tab_view.selectedIndex = 2;
 	}
 
 	public remove(id){
@@ -113,7 +129,15 @@ export class BagModel extends Observable {
 				return located;
 			});
 		if(product) {
-			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: product.id,  backstackVisible: false});
+
+			if(product.variation_mins.length > 0){
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+			} else {
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
+			}
+
+
+			//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: product.id,  backstackVisible: false});
 			var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 			tab_view.selectedIndex = 2;
 

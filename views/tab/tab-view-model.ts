@@ -31,7 +31,7 @@ export class TabModel extends Observable {
 
 	constructor() {
 		super();
-
+//settings.remove('order');
 		this.visibility_processing_tab = 'collapsed';
 		this.visibility_tab = 'visible';
 		this.visibility_products = 'collapsed';
@@ -68,6 +68,16 @@ export class TabModel extends Observable {
 	}
 
 	public loaded(args){
+//		settings.remove('order');
+/*
+//		settings.setString('order', '{}');
+		settings.remove('order');
+		console.log('111111111111111111111111111111111111');
+		if(settings.getString('order'))
+		console.log(settings.getString('order'));
+	console.log('222222222222222222222222222222222222');
+	*/
+
 
 		var thisModel = this;
 		setTimeout(function(){
@@ -195,7 +205,12 @@ export class TabModel extends Observable {
 				return located;
 			});
 		if(product) {
-			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: product.id,  backstackVisible: false});
+			if(product.variation_mins.length > 0){
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+			} else {
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
+			}
+
 			var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 			tab_view.selectedIndex = 2;
 
@@ -227,7 +242,15 @@ export class TabModel extends Observable {
 
 	public gotoProduct(args){
 		this.action_back_tab();
-		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: args.view.bindingContext.id, backstackVisible: false});
+		
+		if(args.view.bindingContext.variation_mins.length > 0){
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: args.view.bindingContext.id, backstackVisible: false});
+		} else {
+			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
+		}
+		//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: args.view.bindingContext.id, backstackVisible: false});
+		
+
 		var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 		tab_view.selectedIndex = 2;
 		this.set('search', '');
