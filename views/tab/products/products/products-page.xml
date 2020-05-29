@@ -6,7 +6,7 @@
 				<FlexboxLayout class="-separator p-x-15">
 					<Image src="{{ image  | urlBefore }}" class="m-r-10 w-25" flexShrink="0" />
 					<FlexboxLayout flexDirection="column" justifyContent="center">
-						<Label text="{{ description }}"  class="m-0 p-0 t-14" />
+						<Label text="{{ description }}"  class="m-0 p-0 t-14" textWrap="true" />
 						<Label text="{{ sku }}" flexGrow="1" class="m-0 p-0 t-10" />
 						<FlexboxLayout justifyContent="flex-start">
 							<Label text="Preço: " class="m-0 p-0 t-14"   />

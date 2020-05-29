@@ -31,7 +31,7 @@
 								<Label text="{{ item_product.sku }}" class="p-0 m-0 m-y-5 text-center" />
 							</StackLayout>
 							<StackLayout class="p-0">
-								<Label text="{{ item_product.description }}"  class="t-16 p-0 p-b-5 w-100" />
+								<Label text="{{ item_product.description }}"  class="t-16 p-0 p-b-5 w-100" textWrap="true" />
 								<StackLayout orientation="horizontal" class="p-0">
 									<Label text="Preç Brut:" class="p-0 w-33" />
 									<Label text="{{ price  | concurrency }}" class="p-0 w-50"/>

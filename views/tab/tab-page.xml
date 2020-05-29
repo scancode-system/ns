@@ -28,7 +28,7 @@
 			<ListView class="list-group1 m-t-101 m-x-15" items="{{ products }}" itemTap="{{ gotoProduct }}" flexGrow="1" >
 				<ListView.itemTemplate>
 					<StackLayout class="-separator">
-						<Label text="{{ description }}" class="p-0 t-16" />
+						<Label text="{{ description }}" class="p-0 t-16" textWrap="true" />
 						<Label text="{{ sku }}" class="p-0" />
 					</StackLayout>
 				</ListView.itemTemplate>
@@ -40,6 +40,6 @@
 			<Label text="Pesquisando Produto" class="t-12 m-r-20" alignSelf="center" />
 			<ActivityIndicator busy="true" loaded="indicatorLoaded" />				
 		</FlexboxLayout>
-	
+
 	</FlexboxLayout>
 </Page>
