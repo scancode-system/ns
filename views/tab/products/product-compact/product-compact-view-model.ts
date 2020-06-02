@@ -46,6 +46,7 @@ export class ProductModel extends Observable {
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				console.log(result.data);
 				this.set('product', result.data);
 
 				this.set('all', this.product.product_variation.all);

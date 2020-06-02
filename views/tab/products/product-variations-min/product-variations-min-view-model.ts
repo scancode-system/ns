@@ -65,20 +65,19 @@ export class ProductVariationMinModel extends Observable {
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				//console.log(result.data.family);
+				console.log('antesssssss');
 				this.products = result.data.family;
 				let product = this.products.find(product => result.data.id == product.id);
 
+				console.log('antesssssss');
 				this.loadItems(product);
 				this.loadProduct(product);
 				this.refreshTableItems();
+				console.log('depoissss');
 
 				this.set('visibility_processing', 'collapsed');
 				this.set('visibility_page', 'visible');
 
-				//console.log(result.data);
-				
-				//this.loadItem(result.data.id);				
 				if(this.item.order_id){
 					this.set('visibility_edit_item', 'visible');
 				}
@@ -86,7 +85,6 @@ export class ProductVariationMinModel extends Observable {
 				this.setListPickerProductFamily();
 			},
 			(error) => {
-				//console.log(error.response);
 				if(error.response.status == 401)
 				{
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
@@ -99,6 +97,16 @@ export class ProductVariationMinModel extends Observable {
 			});
 	}
 
+
+	public loadItems(product){		
+		var order = JSON.parse(settings.getString('order', null));
+		if(order){
+			let items = order.items.filter(item => {return item.item_product.sku == product.sku});
+			items = items.map(item => {return {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price, observation: item.observation};});
+			this.set('items', items);
+		}	
+		
+	}
 
 	private loadProduct(product){
 		this.set('product', product);
@@ -169,9 +177,7 @@ export class ProductVariationMinModel extends Observable {
 							product = modelThis.getProductByChanged(variation, value);
 						}
 
-						//console.log(product);
 						modelThis.loadProduct(product);
-						//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});
 					});
 
 					container_btns.addChild(btn);
@@ -184,9 +190,6 @@ export class ProductVariationMinModel extends Observable {
 	}
 
 	private getProductByVariations(variantionChanged, newValue){
-		//console.log(variantionChanged);
-		//console.log(newValue);
-
 		let products = this.products;
 		let product = products.find(product => {
 
@@ -234,14 +237,6 @@ export class ProductVariationMinModel extends Observable {
 			return find;
 		});
 		return product;
-	}
-
-	public loadItems(product){
-		var order = JSON.parse(settings.getString('order', null));
-		let items = order.items.filter(item => {return item.item_product.sku == product.sku});
-
-		items = items.map(item => {return {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price, observation: item.observation};});
-		this.set('items', items);	
 	}
 
 
@@ -345,38 +340,12 @@ export class ProductVariationMinModel extends Observable {
 			btn.column = thisModel.all.length+1;
 			grid.addChild(btn);
 
-			//e9ac
 
 			btn.on(Button.tapEvent, (data) => {
-
-				//console.log(thisModel.items);
 				let items = thisModel.items.filter(item_from_this_model => {return item.product_id != item_from_this_model.product_id;});
 				thisModel.set('items', items);
 				thisModel.refreshTableItems();
-
-				//console.log(items);
-
-
-				//alert('oi');
-
-				//				console.log(product);
-
-				/*let btn = <Button>data.object;
-
-				let variation = btn.parent.id;
-				let value = btn.text; 
-
-				let product = modelThis.getProductByVariations(variation, value);
-				if(!product){
-					product = modelThis.getProductByChanged(variation, value);
-				}
-
-				//console.log(product);
-				modelThis.loadProduct(product);
-				//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});*/
 			});
-
-
 		});
 
 		this.setPrepertiesGrid(columns, rows);
@@ -462,7 +431,6 @@ export class ProductVariationMinModel extends Observable {
 
 	private updateQty(qty){
 		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (this.item.qty+qty), discount: this.item.discount, price: this.item.price, observation: this.item.observation});
-		//console.log(this.item);
 	}
 
 	private updateDiscount(discount){
@@ -543,10 +511,6 @@ export class ProductVariationMinModel extends Observable {
 
 		items = items.filter(item => {return this.item.product_id != item.product_id;});
 
-
-
-		//console.log(this.item);
-		//let items = this.items.filter(function(item){return item.product_id <> item.product_id});
 		items.unshift(this.item);
 
 		this.set('items', items);
@@ -561,14 +525,12 @@ export class ProductVariationMinModel extends Observable {
 		this.set('visibility_page', 'collapsed');
 		this.set('visibility_edit_item', 'collapsed');
 		this.set('processing_message', 'Atualizando a Sacola');
-		//this.updateObservation(this.observation);
 
 		this.put2();
 	}
 
 
 	public put2(){
-		//console.log(this.items);
 		axios.put(settings.getString("api")+'/items/'+this.item.order_id+'/many', this.items,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('order', JSON.stringify(result.data.order));
@@ -605,79 +567,7 @@ export class ProductVariationMinModel extends Observable {
 		});
 	}
 
-
-	public confirm(args){
-		this.set('visibility_processing', 'visible');
-		this.set('visibility_page', 'collapsed');
-		this.set('visibility_edit_item', 'collapsed');
-		this.set('processing_message', 'Atualizando a Sacola');
-		//this.updateObservation(this.observation);
-
-		if(this.item.id){
-			this.put();
-		} else {
-			this.post();
-		}
-
-	}
-
-	public post(){
-		//console.log(this.item);
-		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
-			(result) => {
-				//console.log(result.data);
-
-				/*settings.setString('order', JSON.stringify(result.data));
-				Frame.getFrameById('products-frame').goBack();
-				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
-				tab_view.selectedIndex = 1;*/
-			},
-			(error) => {
-				console.log(error);
-				console.log(error.response);
-				this.set('visibility_processing', 'collapsed');
-				this.set('visibility_page', 'visible');
-				this.set('visibility_edit_item', 'visible');
-				if(error.response.status == 401 || error.response.status == 404)
-				{
-					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
-				} else if(error.response.status == 422) {
-					var errors = Object.keys(error.response.data.errors);
-					alert(error.response.data.errors[errors[0]][0]);
-				} else if(error.response.status == 403){
-					alert(error.response.data);					
-				} else {
-					alert(error.response.data.message);
-				}
-			});
-	}
-
-	public put(){
-		console.log(this.item);
-		axios.put(settings.getString("api")+'/items/'+this.item.id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
-			(result) => {
-				settings.setString('order', JSON.stringify(result.data));
-				Frame.getFrameById('products-frame').goBack();
-				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
-				tab_view.selectedIndex = 1;
-			},
-			(error) => {
-				this.set('visibility_processing', 'collapsed');
-				this.set('visibility_page', 'visible');
-				this.set('visibility_edit_item', 'visible');
-				if(error.response.status == 401 || error.response.status == 404)
-				{
-					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
-				} else if(error.response.status == 422) {
-					var errors = Object.keys(error.response.data.errors);
-					alert(error.response.data.errors[errors[0]][0]);
-				} else if(error.response.status == 403){
-					alert(error.response.data);					
-				}else {
-					alert(error.response.data.message);
-				}
-			});
-	}	
+	
 
 	// utils
 	public qty_start(){

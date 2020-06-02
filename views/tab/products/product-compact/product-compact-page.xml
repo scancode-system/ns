@@ -19,25 +19,8 @@
 
 				<FlexboxLayout flexDirection="column" id="variations" ></FlexboxLayout>
 
-				<FlexboxLayout flexDirection="column" visibility="{{ visibility_edit_item }}">
-					<Label text="{{ product.price | concurrency }}" class="t-30 text-center m-t-10 m-b-15" />
-					<FlexboxLayout>
-						<Button text="{{ '0xea0b' | getIcon }}" class=" icon -outline-primary text-primary m-0"  tap="{{ remove }}" longPress="{{ qtyPrompt }}" />
-						<TextField text="{{ item.qty }}" class="-outline-primary m-0 t-18 text-primary" style="margin:0px; border-width:1 0 1 0; padding: 0 10 0 10" width="80" textAlignment="center" editable="false" tap="{{ changeQty }}" />
-						<Button text="{{ '0xea0a' | getIcon }}" class="icon -outline-primary text-primary m-0"  tap="{{ add }}"  />
-						
-						<Button text="OBS" class="icon -outline-dark m-0 m-l-10" style="border-width: 1 0 1 1;"  tap="{{ obsPrompt }}" />
-						<Button text="{{ item.discount+'%' }}" class="icon -outline-dark m-0"  tap="{{ discountPrompt }}" />
-					</FlexboxLayout>
-					<Button text="Incluir na sacola" class="icon bg-primary -outline-primary  m-0 m-t-10 m-b-10 t-20" tap="{{ confirm }}" />
-				</FlexboxLayout>
 
-
-				<FlexboxLayout class="m-b-10" justifyContent="center">
-					<Label text="Informações " class="t-16" />
-					<Label text="{{ '0xea08' | getIcon }}" class="icon t-20 m-r-10" />
-				</FlexboxLayout>
-
+				<!-- INFO -->
 				<FlexboxLayout class="bg-light p-y-10">
 					<StackLayout flexGrow="1">
 						<Label text="ID" class="t-10 text-center p-y-0" />
@@ -97,6 +80,22 @@
 						</ListView.itemTemplate>
 					</ListView>
 				</FlexboxLayout>
+
+
+
+				<!-- EDIT -->
+				<FlexboxLayout flexDirection="column" visibility="{{ visibility_edit_item }}" class="m-t-10">
+					<FlexboxLayout>
+						<Button text="{{ '0xea0b' | getIcon }}" class=" icon -outline-primary text-primary m-0"  tap="{{ remove }}" longPress="{{ qtyPrompt }}" />
+						<TextField text="{{ item.qty }}" class="-outline-primary m-0 t-18 text-primary" style="margin:0px; border-width:1 0 1 0; padding: 0 10 0 10" width="80" textAlignment="center" editable="false" tap="{{ changeQty }}" />
+						<Button text="{{ '0xea0a' | getIcon }}" class="icon -outline-primary text-primary m-0"  tap="{{ add }}"  />
+						
+						<Button text="OBS" class="icon -outline-dark m-0 m-l-10" style="border-width: 1 0 1 1;"  tap="{{ obsPrompt }}" />
+						<Button text="{{ item.discount+'%' }}" class="icon -outline-dark m-0"  tap="{{ discountPrompt }}" />
+					</FlexboxLayout>
+					<Button text="Incluir na sacola" class="icon bg-primary -outline-primary  m-0 m-t-10 m-b-10 t-20" tap="{{ confirm }}" />
+				</FlexboxLayout>
+
 			</FlexboxLayout>
 		</ScrollView>
 	</FlexboxLayout>
