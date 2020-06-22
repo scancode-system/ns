@@ -111,6 +111,36 @@ export class OrderModel extends Observable {
 		});
 	}
 
+
+	public updateOrder(args){
+		this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('processing_message', 'Atualizando dados do Pedido');
+
+		axios.get(settings.getString("api")+'/orders/'+this.order.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				settings.setString('order', JSON.stringify(result.data));
+
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
+			},
+			(error) => {
+				if(error.response.status == 401)
+				{
+					settings.remove('saller');
+					settings.remove('products');
+					settings.remove('clients');
+					settings.remove('shipping_companies');
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else {
+					this.set('visibility_processing', 'collapsed');
+					this.set('visibility_page', 'visible');
+					alert(error.response.data.message);
+				}
+			});
+
+	}
+
 	public completedTap(args){
 		dialogs.confirm("Deseja concluir o pedido?").then(function (result) {
 			if(result){
