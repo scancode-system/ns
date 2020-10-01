@@ -63,6 +63,7 @@ export class LoginModel extends Observable {
 				this.updateProducts();
 			},
 			(error) => {
+				console.log('1');
 				if(error.response.status == 401){
 					alert('Login inválido');
 					this.set('visibility_processing', 'collapsed');
@@ -75,12 +76,14 @@ export class LoginModel extends Observable {
 
 	public updateProducts(){
 		this.set('processing_message', 'Sincronizando Produtos');
+		console.log(settings.getString("api")+'/products');
 		axios.get(settings.getString("api")+'/products', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				settings.setString('products', JSON.stringify(result.data));
 				this.updateShippingCompanies();
 			},
 			(error) => {
+				console.log(error);
 				if(error.response.status == 401)
 				{
 					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});

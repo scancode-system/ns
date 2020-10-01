@@ -32,6 +32,7 @@ export class ProductModel extends Observable {
 	}
 
 	public loaded(args) {
+		alert('2');
 		this.set('visibility_processing', 'visible');
 		this.set('visibility_page', 'collapsed');
 		this.set('visibility_edit_item', 'collapsed');
@@ -40,6 +41,7 @@ export class ProductModel extends Observable {
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				this.set('product', result.data);
+				//this.loadStock(this.product);
 				this.loadItem(result.data.id);
 
 				this.set('visibility_processing', 'collapsed');

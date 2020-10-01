@@ -55,6 +55,8 @@ export class ProductVariationMinModel extends Observable {
 	}
 
 	public loaded(args) {
+		alert('3');
+		console.log('mega');
 
 		this.page = args.object;
 

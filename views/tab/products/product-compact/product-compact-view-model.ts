@@ -9,10 +9,12 @@ import { isIOS, isAndroid } from "tns-core-modules/platform";
 import { Label } from "tns-core-modules/ui/label";
 import { Button } from "tns-core-modules/ui/button";
 import {FlexboxLayout} from "tns-core-modules/ui/layouts/flexbox-layout";
+import { Repeater } from "tns-core-modules/ui/repeater";
 
 export class ProductModel extends Observable {
 
 	public product; 
+	public stocks = [];
 	public item;
 	public observation;
 
@@ -46,8 +48,8 @@ export class ProductModel extends Observable {
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				console.log(result.data);
 				this.set('product', result.data);
+				this.loadStockModule(args.object);
 
 				this.set('all', this.product.product_variation.all);
 				this.set('available', this.product.product_variation.available);
@@ -77,6 +79,44 @@ export class ProductModel extends Observable {
 					alert('Chame o administrador do sistema.');
 				}
 			});
+	}
+
+	private loadStockModule(page){
+		if(this.product.product_stock){
+
+			axios.get(settings.getString("api")+'/stocks', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+				(result) => {
+					//console.log(result.data);
+					let stocks = result.data;
+					let product_stock = this.product.product_stock;
+
+					let stocks2 = [];
+					stocks.forEach(function(item){stocks2.push([item.alias, product_stock['left'+item.sufix]]); console.log(product_stock['left'+item.sufix])});
+					console.log(stocks2);
+
+					//console.log(stocks2);
+					this.set('stocks', stocks2);
+					//repeater.refresh();
+					let repeater = <Repeater>(page).getViewById('repeater-stocks');
+					repeater.refresh();
+					console.log(repeater);
+				},
+				(error) => {
+					console.log(error.response);
+					if(error.response.status == 401)
+					{
+						Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+					} else {
+						alert(error.response.data.message);
+						alert('Chame o administrador do sistema.');
+					}
+				});
+
+			/*let product_stock = this.product.product_stock;
+			product_stock = Object.entries(product_stock); 
+			let stocks = product_stock.filter(field => field[0].includes('left'));
+			this.set('stocks', stocks);*/
+		}
 	}
 
 	private loadingVariations(page){
@@ -412,10 +452,11 @@ export class ProductModel extends Observable {
 	}
 
 	public post(){
-		//console.log(this.item);
+		console.log(this.item);
 		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				settings.setString('order', JSON.stringify(result.data));
+				result.data.messages.forEach(function(message){alert(message)});
+				settings.setString('order', JSON.stringify(result.data.order));
 				Frame.getFrameById('products-frame').goBack();
 				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 				tab_view.selectedIndex = 1;
@@ -444,7 +485,8 @@ export class ProductModel extends Observable {
 		console.log(this.item);
 		axios.put(settings.getString("api")+'/items/'+this.item.id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				settings.setString('order', JSON.stringify(result.data));
+				result.data.messages.forEach(function(message){alert(message)});
+				settings.setString('order', JSON.stringify(result.data.order));
 				Frame.getFrameById('products-frame').goBack();
 				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 				tab_view.selectedIndex = 1;

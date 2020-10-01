@@ -31,7 +31,7 @@ export class TabModel extends Observable {
 
 	constructor() {
 		super();
-//settings.remove('order');
+		//settings.remove('order');
 		this.visibility_processing_tab = 'collapsed';
 		this.visibility_tab = 'visible';
 		this.visibility_products = 'collapsed';
@@ -68,7 +68,7 @@ export class TabModel extends Observable {
 	}
 
 	public loaded(args){
-//		settings.remove('order');
+		//		settings.remove('order');
 /*
 //		settings.setString('order', '{}');
 		settings.remove('order');
@@ -79,70 +79,70 @@ export class TabModel extends Observable {
 	*/
 
 
-		var thisModel = this;
-		setTimeout(function(){
-			thisModel.scanFocus();
-		}, 500);
+	var thisModel = this;
+	setTimeout(function(){
+		thisModel.scanFocus();
+	}, 500);
+}
+
+public selectedIndexChanged(args) {
+	this.selectedTab(args.newIndex);
+}
+
+private selectedTab(index){
+	this.refreshIcons();
+	switch(index){
+		case 0: this.set("icon_orders", "res://pedido2"); this.refreshOrderPage();  break;
+		case 1: this.set("icon_bag", "res://sacola2");  this.refreshBagPage(); break;
+		case 2: this.set("icon_products", "res://loja2"); break;
+	}   
+	this.scanFocus();     
+}  
+
+private refreshIcons() {
+	this.set('icon_orders', 'res://pedido1');
+	this.set('icon_bag', 'res://sacola1');
+	this.set('icon_products', 'res://loja1');
+	//this.set('icon_mais', 'res://mais1');
+}
+
+private refreshBagPage(){
+	// tratar atualizar comente se old index estiver dentro dos padroes
+	let bag_page = Frame.getFrameById('root-frame').getViewById('bag-page');
+	bag_page.bindingContext.loaded();
+}
+
+private refreshOrderPage(){
+	// tratar atualizar comente se old index estiver dentro dos padroes
+	var order_page = Frame.getFrameById('root-frame').getViewById('order-page');
+	if(typeof order_page !== 'undefined'){
+		order_page.bindingContext.loaded();
 	}
+}
 
-	public selectedIndexChanged(args) {
-		this.selectedTab(args.newIndex);
+
+public scanFocus(){
+	var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan'); 
+	if(txt){
+		txt.focus();
+		txt.dismissSoftInput();
+		//this.scanning = false;
+		txt.text = '';
 	}
+}
 
-	private selectedTab(index){
-		this.refreshIcons();
-		switch(index){
-			case 0: this.set("icon_orders", "res://pedido2"); this.refreshOrderPage();  break;
-			case 1: this.set("icon_bag", "res://sacola2");  this.refreshBagPage(); break;
-			case 2: this.set("icon_products", "res://loja2"); break;
-		}   
-		this.scanFocus();     
-	}  
+public scannig(){
+	this.set('visibility_processing_tab', 'collapsed');
+	this.set('visibility_tab', 'collapsed');
+	this.set('visibility_products', 'collapsed');
+	this.set('visibility_scanning', 'visible');
 
-	private refreshIcons() {
-		this.set('icon_orders', 'res://pedido1');
-		this.set('icon_bag', 'res://sacola1');
-		this.set('icon_products', 'res://loja1');
-		//this.set('icon_mais', 'res://mais1');
-	}
-
-	private refreshBagPage(){
-		// tratar atualizar comente se old index estiver dentro dos padroes
-		let bag_page = Frame.getFrameById('root-frame').getViewById('bag-page');
-		bag_page.bindingContext.loaded();
-	}
-
-	private refreshOrderPage(){
-		// tratar atualizar comente se old index estiver dentro dos padroes
-		var order_page = Frame.getFrameById('root-frame').getViewById('order-page');
-		if(typeof order_page !== 'undefined'){
-			order_page.bindingContext.loaded();
-		}
-	}
-
-
-	public scanFocus(){
-		var txt = <TextView>Frame.getFrameById('root-frame').getViewById('text-view-scan'); 
-		if(txt){
-			txt.focus();
-			txt.dismissSoftInput();
-			//this.scanning = false;
-			txt.text = '';
-		}
-	}
-
-	public scannig(){
-		this.set('visibility_processing_tab', 'collapsed');
-		this.set('visibility_tab', 'collapsed');
-		this.set('visibility_products', 'collapsed');
-		this.set('visibility_scanning', 'visible');
-
-		var scan_now =  this.scan.replace(/(\r\n\t|\n|\r\t)/gm,"");	
-		setTimeout(function(model, length_before){
-			model.limit.use(async () => {
-				await model.criticaFunction(length_before);
-			});
-		}, 750, this, scan_now.length);
+	var scan_now =  this.scan.replace(/(\r\n\t|\n|\r\t)/gm,"");	
+	setTimeout(function(model, length_before){
+		model.limit.use(async () => {
+			await model.criticaFunction(length_before);
+		});
+	}, 750, this, scan_now.length);
 
 		/*if(!this.scanning){
 			console.log('INICIOU SCAN');
@@ -205,8 +205,12 @@ export class TabModel extends Observable {
 				return located;
 			});
 		if(product) {
-			if(product.variation_mins.length > 0){
-				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+			if(product.variation_mins){
+				if(product.variation_mins.length > 0){
+					Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+				} else {
+					Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
+				}
 			} else {
 				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
 			}
@@ -242,10 +246,13 @@ export class TabModel extends Observable {
 
 	public gotoProduct(args){
 		this.action_back_tab();
-		
-		if(args.view.bindingContext.variation_mins.length > 0){
-			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: args.view.bindingContext.id, backstackVisible: false});
-		} else {
+		if(args.view.bindingContext.variation_mins){
+			if(args.view.bindingContext.variation_mins.length > 0){
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: args.view.bindingContext.id, backstackVisible: false});
+			} else {
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
+			}
+		}else {
 			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
 		}
 		//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: args.view.bindingContext.id, backstackVisible: false});

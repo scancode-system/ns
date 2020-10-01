@@ -51,9 +51,13 @@ export class BagModel extends Observable {
 			return (product.id == item.product_id);
 		})[0];
 
-		if(product.variation_mins.length > 0){
-			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
-		} else {
+		if(product.variation_mins){
+			if(product.variation_mins.length > 0){
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+			} else {
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
+			}
+		}else {
 			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
 		}
 

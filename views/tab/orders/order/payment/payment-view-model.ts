@@ -26,12 +26,17 @@ export class PaymentModel extends Observable {
 
 		axios.get(settings.getString("api")+'/payments/all', {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				//console.log(result.data);
+
 				var payments = result.data;
 				var payments_allowed = payments.filter(function(payment){
 					return payment.min_value <= this
 					//alert(this);
 				}, this.order.total);
+
+				console.log(payments_allowed);
 				payments_allowed.unshift({description: 'Selecione um Pagamento'});
+				//console.log(payments_allowed);
 
 				this.set('payments', payments_allowed);
 

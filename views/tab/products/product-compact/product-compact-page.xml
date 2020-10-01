@@ -35,13 +35,24 @@
 						<Label text="{{ product.min_qty }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 					<StackLayout flexGrow="1">
-						<Label text="Múltiplo" class="t-10 text-center p-y-0" />
+						<Label text="Múltiplo1" class="t-10 text-center p-y-0" />
 						<Label text="{{ product.multiple }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 
 				</FlexboxLayout>
 
-				<FlexboxLayout class="bg-light  p-y-10 p-x-15" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
+					<Repeater items="{{ stocks }}" id="repeater-stocks" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
+						<Repeater.itemsLayout>
+							<FlexboxLayout class="bg-light  p-y-10 p-x-15" />
+						</Repeater.itemsLayout>
+						<Repeater.itemTemplate>
+							<StackLayout flexGrow="1">
+							<Label text="{{ 'Estoque '+$value[0] }}" class="t-10 text-center p-y-0" />
+							<Label text="{{ $value[1] }}" class="t-14 text-center p-y-0" />
+							</StackLayout>
+						</Repeater.itemTemplate>
+					</Repeater>	
+				<!--<FlexboxLayout class="bg-light  p-y-10 p-x-15" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
 					<StackLayout flexGrow="1">
 						<Label text="Quantidade em Estoque" class="t-10 text-center p-y-0" />
 						<Label text="{{ (product.product_stock)?product.product_stock.left:'' }}" class="t-14 text-center p-y-0" />
@@ -57,7 +68,7 @@
 						<Label text="Quantidade Futuro" class="t-10 text-center p-y-0" />
 						<Label text="{{ (product.product_stock_now_after)?product.product_stock_now_after.left_after:'' }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
-				</FlexboxLayout>
+				</FlexboxLayout>-->
 				<FlexboxLayout flexDirection="column" visibility="{{ (product.price_list_products )?'visible':'collapsed' }}">
 					<Label text="Tebela de Preço" class="p-y-5 bg-info text-center t-18" />
 					<ListView items="{{ product.price_list_products }}" rowHeight="45" height="{{ (45*product.price_list_products.length) }}" >
