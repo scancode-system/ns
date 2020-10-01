@@ -205,15 +205,15 @@ public scannig(){
 				return located;
 			});
 		if(product) {
-			if(product.variation_mins){
-				if(product.variation_mins.length > 0){
-					Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
-				} else {
-					Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
-				}
-			} else {
+			//if(product.variation_mins){
+			//	if(product.variation_mins.length > 0){
+			//		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+			//	} else {
+			//		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
+			//	}
+			//} else {
 				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
-			}
+			//}
 
 			var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
 			tab_view.selectedIndex = 2;
@@ -246,15 +246,15 @@ public scannig(){
 
 	public gotoProduct(args){
 		this.action_back_tab();
-		if(args.view.bindingContext.variation_mins){
-			if(args.view.bindingContext.variation_mins.length > 0){
-				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: args.view.bindingContext.id, backstackVisible: false});
-			} else {
-				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
-			}
-		}else {
+		//if(args.view.bindingContext.variation_mins){
+		//	if(args.view.bindingContext.variation_mins.length > 0){
+		//		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: args.view.bindingContext.id, backstackVisible: false});
+		//	} else {
+		//		Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
+		//	}
+		//}else {
 			Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: args.view.bindingContext.id, backstackVisible: false});	
-		}
+		//}
 		//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: args.view.bindingContext.id, backstackVisible: false});
 		
 
