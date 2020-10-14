@@ -48,9 +48,11 @@ export class ProductModel extends Observable {
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				console.log('antessss2');
 				this.set('product', result.data);
 				this.loadStockModule(args.object);
-
+				
+				//console.log(this.product.product_variation);
 				this.set('all', this.product.product_variation.all);
 				this.set('available', this.product.product_variation.available);
 
@@ -92,14 +94,14 @@ export class ProductModel extends Observable {
 
 					let stocks2 = [];
 					stocks.forEach(function(item){stocks2.push([item.alias, product_stock['left'+item.sufix]]); console.log(product_stock['left'+item.sufix])});
-					console.log(stocks2);
+					//console.log(stocks2);
 
 					//console.log(stocks2);
 					this.set('stocks', stocks2);
 					//repeater.refresh();
 					let repeater = <Repeater>(page).getViewById('repeater-stocks');
 					repeater.refresh();
-					console.log(repeater);
+					//console.log(repeater);
 				},
 				(error) => {
 					console.log(error.response);
@@ -178,7 +180,7 @@ export class ProductModel extends Observable {
 							Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});
 						} else {
 							product = modelThis.getProductByChanged(variation, value);
-							console.log(product);
+							//console.log(product);
 							Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});
 						}
 					});
@@ -193,8 +195,8 @@ export class ProductModel extends Observable {
 	}
 
 	private getProductByVariations(variantionChanged, newValue){
-		console.log(variantionChanged);
-		console.log(newValue);
+		//console.log(variantionChanged);
+		//console.log(newValue);
 
 		let products = this.product.family;
 		let product = products.find(product => {
@@ -287,7 +289,7 @@ export class ProductModel extends Observable {
 				this.set('item', {id: item.id, order_id: item.order_id, product_id: item.product_id, qty: item.qty, discount: Math.round(item.discount), price: item.price, observation: item.observation});
 				this.set('observation', item.observation);
 			} else {
-				console.log(this.qty_start());
+				//console.log(this.qty_start());
 				this.set('item', {id: null, order_id: order.id, product_id: this.id, qty: this.qty_start(), discount: 0, price: this.product.price, observation: ''});
 			}
 		} else {
@@ -359,7 +361,7 @@ export class ProductModel extends Observable {
 
 	private updateQty(qty){
 		this.set('item', {id: this.item.id, order_id: this.item.order_id, product_id: this.item.product_id, qty: (this.item.qty+qty), discount: this.item.discount, price: this.item.price, observation: this.item.observation});
-		console.log(this.item);
+		//console.log(this.item);
 	}
 
 	private updateDiscount(discount){
@@ -452,7 +454,7 @@ export class ProductModel extends Observable {
 	}
 
 	public post(){
-		console.log(this.item);
+		//console.log(this.item);
 		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				result.data.messages.forEach(function(message){alert(message)});
@@ -482,7 +484,7 @@ export class ProductModel extends Observable {
 	}
 
 	public put(){
-		console.log(this.item);
+		//console.log(this.item);
 		axios.put(settings.getString("api")+'/items/'+this.item.id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
 				result.data.messages.forEach(function(message){alert(message)});

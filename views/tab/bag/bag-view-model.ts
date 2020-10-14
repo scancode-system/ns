@@ -134,11 +134,11 @@ export class BagModel extends Observable {
 			});
 		if(product) {
 
-			if(product.variation_mins.length > 0){
-				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
-			} else {
+			//if(product.variation_mins.length > 0){
+			//	Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-variations-min/product-variations-min-page", context: product.id, backstackVisible: false});
+			//} else {
 				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: product.id, backstackVisible: false});	
-			}
+			//}
 
 
 			//Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product/product-page", context: product.id,  backstackVisible: false});

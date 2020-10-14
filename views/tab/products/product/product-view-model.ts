@@ -36,7 +36,7 @@ export class ProductModel extends Observable {
 		this.set('visibility_processing', 'visible');
 		this.set('visibility_page', 'collapsed');
 		this.set('visibility_edit_item', 'collapsed');
-		this.set('processing_message', 'Carregando Produto');
+		this.set('processing_message', 'Carregando Produto1');
 
 		axios.get(settings.getString("api")+'/products/'+this.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
