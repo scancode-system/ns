@@ -35,23 +35,23 @@
 						<Label text="{{ product.min_qty }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 					<StackLayout flexGrow="1">
-						<Label text="Múltiplo1" class="t-10 text-center p-y-0" />
+						<Label text="Múltiplo" class="t-10 text-center p-y-0" />
 						<Label text="{{ product.multiple }}" class="t-14 text-center p-y-0" />
 					</StackLayout>
 
 				</FlexboxLayout>
 
-					<Repeater items="{{ stocks }}" id="repeater-stocks" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
-						<Repeater.itemsLayout>
-							<FlexboxLayout class="bg-light  p-y-10 p-x-15" />
-						</Repeater.itemsLayout>
-						<Repeater.itemTemplate>
-							<StackLayout flexGrow="1">
+				<Repeater items="{{ stocks }}" id="repeater-stocks" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
+					<Repeater.itemsLayout>
+						<FlexboxLayout class="bg-light  p-y-10 p-x-15" />
+					</Repeater.itemsLayout>
+					<Repeater.itemTemplate>
+						<StackLayout flexGrow="1">
 							<Label text="{{ 'Estoque '+$value[0] }}" class="t-10 text-center p-y-0" />
 							<Label text="{{ $value[1] }}" class="t-14 text-center p-y-0" />
-							</StackLayout>
-						</Repeater.itemTemplate>
-					</Repeater>	
+						</StackLayout>
+					</Repeater.itemTemplate>
+				</Repeater>	
 				<!--<FlexboxLayout class="bg-light  p-y-10 p-x-15" visibility="{{ (product.product_stock)?'visible':'collapsed' }}">
 					<StackLayout flexGrow="1">
 						<Label text="Quantidade em Estoque" class="t-10 text-center p-y-0" />
@@ -104,7 +104,10 @@
 						<Button text="OBS" class="icon -outline-dark m-0 m-l-10" style="border-width: 1 0 1 1;"  tap="{{ obsPrompt }}" />
 						<Button text="{{ item.discount+'%' }}" class="icon -outline-dark m-0"  tap="{{ discountPrompt }}" />
 					</FlexboxLayout>
-					<Button text="Incluir na sacola" class="icon bg-primary -outline-primary  m-0 m-t-10 m-b-10 t-20" tap="{{ confirm }}" />
+					<FlexboxLayout>
+						<Button text="Incluir" class="icon bg-primary -outline-primary  m-0 m-t-10 m-x-5 t-20" tap="{{ confirm }}" flexGrow="1" />
+						<Button text="Remover" class="icon bg-danger -outline-danger  m-0 m-t-10 m-x-5 t-20" tap="{{ removeItem }}" flexGrow="1" visibility="{{ (item.id)?'visible':'collapsed' }}" />
+					</FlexboxLayout>
 				</FlexboxLayout>
 
 			</FlexboxLayout>

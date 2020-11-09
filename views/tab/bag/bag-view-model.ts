@@ -27,7 +27,17 @@ export class BagModel extends Observable {
 	public loaded(args = null) {
 		var order = JSON.parse(settings.getString('order', null));
 		if(order){
-			this.set('items', order.items.reverse());
+			order.items.sort(function(item1, item2){
+				if(item1.item_product.description > item2.item_product.description){
+					return 1;
+				}
+				if(item1.item_product.description < item2.item_product.description){
+					return -1;
+				}
+				return 0;
+			}); 
+			this.set('items', order.items);
+
 		} else {
 			this.set('items', null);
 		}

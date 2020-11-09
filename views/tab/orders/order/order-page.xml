@@ -24,7 +24,6 @@
 				<Button text="{{ (order.order_shipping_company.shipping_company_id) ? 'Transportadora: '+order.order_shipping_company.description: 'Transportadora: Indefinido' }}" class="{{ (order.order_shipping_company.shipping_company_id)?'-outline-success m-x-15 m-t-10 p-l-15 t-18 text-left':'-outline-warning m-x-15 m-t-10 p-l-15 t-18 text-left' }}" tap="{{ gotoShippingCompany }}" />
 				<Button text="Assinatura" class="{{ (order.signature_check)?'-outline-success m-x-15 m-t-15 p-l-15 t-18':'-outline-warning m-x-15 m-t-10 p-l-15 t-18' }}" tap="{{ gotoSignature }}" />
 				<Button text="Desconto" class="-outline-dark m-x-15 m-t-10 p-l-15 t-18"  tap="{{ discountPrompt }}" />
-				<Button text="Atualizar Dados" class="-outline-primary text-primary m-x-15 m-t-10 p-l-15 t-18" tap="{{ updateOrder }}" />
 			</StackLayout>
 		</ScrollView>
 		<StackLayout class="bg-light p-x-15" flexShrink="0" visibility="{{ (order.status_id==1)?'visible':'collapsed' }}" androidElevation="12">

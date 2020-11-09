@@ -457,7 +457,7 @@ export class ProductModel extends Observable {
 		//console.log(this.item);
 		axios.post(settings.getString("api")+'/items/'+this.item.order_id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
-				result.data.messages.forEach(function(message){alert(message)});
+				//result.data.messages.forEach(function(message){alert(message)});
 				settings.setString('order', JSON.stringify(result.data.order));
 				Frame.getFrameById('products-frame').goBack();
 				var tab_view = <TabView>Frame.getFrameById('root-frame').getViewById('tab-view'); 
@@ -487,6 +487,7 @@ export class ProductModel extends Observable {
 		//console.log(this.item);
 		axios.put(settings.getString("api")+'/items/'+this.item.id, this.item,{auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
 			(result) => {
+				//console.log(result.data.messages);
 				result.data.messages.forEach(function(message){alert(message)});
 				settings.setString('order', JSON.stringify(result.data.order));
 				Frame.getFrameById('products-frame').goBack();
@@ -510,6 +511,38 @@ export class ProductModel extends Observable {
 				}
 			});
 	}	
+
+	public removeItem(args){
+				this.set('visibility_processing', 'visible');
+		this.set('visibility_page', 'collapsed');
+		this.set('visibility_edit_item', 'collapsed');
+		this.set('processing_message', 'Removendo Item');
+		axios.delete(settings.getString("api")+'/items/'+this.item.id, {auth:{username:settings.getString("username"), password: settings.getString("password")}}).then(
+			(result) => {
+				settings.setString('order', JSON.stringify(result.data));
+				Frame.getFrameById('products-frame').navigate({moduleName: "views/tab/products/product-compact/product-compact-page", context: this.product.id, backstackVisible: false});
+
+
+			},
+			(error) => {
+				if(error.response.status == 401)
+				{
+					settings.remove('saller');
+					settings.remove('products');
+					settings.remove('clients');
+					settings.remove('shipping_companies');
+					Frame.getFrameById("root-frame").navigate({moduleName: "views/login/login-page", clearHistory: true});
+				} else if(error.response.status == 403){
+					alert(error.response.data);					
+				} else {
+					console.log(error.response);
+					alert(error.response.data.message);
+				}
+				this.set('visibility_processing', 'collapsed');
+				this.set('visibility_page', 'visible');
+				this.set('visibility_edit_item', 'visible');
+			});
+	}
 
 	// utils
 	public qty_start(){
